@@ -7,7 +7,7 @@
 #  inventory_number :string           not null
 #  serial_number    :string           not null
 #  location_id      :bigint           not null
-#  comment          :text
+#  comment          :text             default(""), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2019_08_07_075937) do
     t.string "inventory_number", null: false
     t.string "serial_number", null: false
     t.bigint "location_id", null: false
-    t.text "comment"
+    t.text "comment", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_devices_on_location_id"

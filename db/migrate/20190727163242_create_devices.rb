@@ -5,7 +5,7 @@ class CreateDevices < ActiveRecord::Migration[5.2]
       t.string :inventory_number, null: false
       t.string :serial_number, null: false
       t.references :location, foreign_key: true, null: false
-      t.text :comment
+      t.text :comment, null: false, default: ""
 
       t.timestamps
     end
