@@ -20,4 +20,8 @@ class Location < ApplicationRecord
     orbeli
     prosvet
   )
+
+  def full_location
+    "#{department} #{room}"
+  end
 end

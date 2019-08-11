@@ -1,1 +1,23 @@
-h1 index
+= link_to 'New device', new_device_path
+table
+  tr
+    th id
+    th Name
+    th Inventory number
+    th Serial number
+    th Location
+    th Comment
+
+  - @devices.each do |device|
+   tr
+     td = device.id
+     td #{device.name.type.title} #{device.name.brand.title} #{device.name.model}
+     td = device.inventory_number
+     td = device.serial_number
+     td #{device.location.department} #{device.location.room}
+     td = device.comment
+     td = link_to 'Show', device_path(device)
+     td = link_to 'Edit', edit_device_path(device)
+     td = link_to 'Delete', device_path(device),
+          method: :delete,
+          data: { confirm: 'Are you sure?' }

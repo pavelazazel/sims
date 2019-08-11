@@ -13,8 +13,8 @@
 #
 
 class Device < ApplicationRecord
-  belongs_to :name
-  belongs_to :location
+  belongs_to :name, optional: true
+  belongs_to :location, optional: true
 
   validates :name, :inventory_number, :serial_number, :location,
     presence: true

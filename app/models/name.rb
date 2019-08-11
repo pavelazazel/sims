@@ -11,10 +11,14 @@
 #
 
 class Name < ApplicationRecord
-  belongs_to :type
-  belongs_to :brand
+  belongs_to :type, optional: true
+  belongs_to :brand, optional: true
   has_many :device, dependent: :destroy
 
   validates :type, :brand, :model,
     presence: true
+
+  def full_name
+    "#{type.title} #{brand.title} #{model}"
+  end
 end

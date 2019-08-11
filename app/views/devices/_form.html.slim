@@ -1,0 +1,24 @@
+= form_with model: @device, local: true do |form|
+  - if @device.errors.any?
+      div id="error_explanation"
+        h2 #{pluralize(@device.errors.count, "error")} prohibited this device from being saved:
+        - @device.errors.full_messages.each do |msg|
+          li
+            = msg
+  p
+    = form.label :name
+    = form.collection_select(:name_id, Name.all, :id, :full_name, prompt: true)
+  p
+    = form.label :inventory_number
+    = form.text_field :inventory_number
+  p
+    = form.label :serial_number
+    = form.text_field :serial_number
+  p
+    = form.label :location
+    = form.collection_select(:location_id, Location.all, :id, :full_location, prompt: true)
+  p
+    = form.label :comment
+    = form.text_area :comment
+  p
+    = form.submit
