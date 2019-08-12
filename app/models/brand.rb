@@ -3,7 +3,7 @@
 # Table name: brands
 #
 #  id         :bigint           not null, primary key
-#  name       :string           not null
+#  title      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -11,6 +11,6 @@
 class Brand < ApplicationRecord
   has_many :name, dependent: :destroy
 
-  validates :name,
+  validates :title,
     presence: true
 end
