@@ -1,0 +1,18 @@
+= form_with model: @name, local: true do |form|
+  - if @name.errors.any?
+      div id="error_explanation"
+        h2 #{pluralize(@name.errors.count, "error")} prohibited this name from being saved:
+        - @name.errors.full_messages.each do |msg|
+          li
+            = msg
+  p
+    = form.label :type
+    = form.collection_select(:type_id, Type.all, :id, :title, prompt: true)
+  p
+    = form.label :brand
+    = form.collection_select(:brand_id, Brand.all, :id, :title, prompt: true)
+  p
+    = form.label :model
+    = form.text_field :model
+  p
+    = form.submit

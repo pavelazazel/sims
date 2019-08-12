@@ -1,0 +1,15 @@
+= form_with model: @location, local: true do |form|
+  - if @location.errors.any?
+      div id="error_explanation"
+        h2 #{pluralize(@location.errors.count, "error")} prohibited this location from being saved:
+        - @location.errors.full_messages.each do |msg|
+          li
+            = msg
+  p
+    = form.label :department
+    = form.text_field :department
+  p
+    = form.label :room
+    = form.text_field :room
+  p
+    = form.submit

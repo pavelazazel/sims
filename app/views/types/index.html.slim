@@ -1,0 +1,15 @@
+= link_to 'New type', new_type_path
+table
+  tr
+    th id
+    th Title
+
+  - @types.each do |type|
+   tr
+     td = type.id
+     td = type.title
+     td = link_to 'Show', type_path(type)
+     td = link_to 'Edit', edit_type_path(type)
+     td = link_to 'Delete', type_path(type),
+          method: :delete,
+          data: { confirm: 'Are you sure?' }

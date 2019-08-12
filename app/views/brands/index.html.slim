@@ -1,0 +1,15 @@
+= link_to 'New brand', new_brand_path
+table
+  tr
+    th id
+    th Title
+
+  - @brands.each do |brand|
+   tr
+     td = brand.id
+     td = brand.title
+     td = link_to 'Show', brand_path(brand)
+     td = link_to 'Edit', edit_brand_path(brand)
+     td = link_to 'Delete', brand_path(brand),
+          method: :delete,
+          data: { confirm: 'Are you sure?' }

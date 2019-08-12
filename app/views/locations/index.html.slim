@@ -1,0 +1,17 @@
+= link_to 'New location', new_location_path
+table
+  tr
+    th id
+    th Department
+    th Room
+
+  - @locations.each do |location|
+   tr
+     td = location.id
+     td = location.department
+     td = location.room
+     td = link_to 'Show', location_path(location)
+     td = link_to 'Edit', edit_location_path(location)
+     td = link_to 'Delete', location_path(location),
+          method: :delete,
+          data: { confirm: 'Are you sure?' }

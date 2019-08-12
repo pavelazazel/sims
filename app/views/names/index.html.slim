@@ -1,0 +1,19 @@
+= link_to 'New name', new_name_path
+table
+  tr
+    th id
+    th Type
+    th Brand
+    th Model
+
+  - @names.each do |name|
+   tr
+     td = name.id
+     td = name.type.title
+     td = name.brand.title
+     td = name.model
+     td = link_to 'Show', name_path(name)
+     td = link_to 'Edit', edit_name_path(name)
+     td = link_to 'Delete', name_path(name),
+          method: :delete,
+          data: { confirm: 'Are you sure?' }
