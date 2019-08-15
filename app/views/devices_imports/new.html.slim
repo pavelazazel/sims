@@ -1,0 +1,18 @@
+h1 Import Items From Excel
+
+p Note: Only import spreadsheets that were previously downloaded from this application.
+
+/<h3>Requirements</h3>
+/<ul>
+  <li>Here you could list the validations you have in place for your model</li>
+  <li>That way your user has a better chance of successful import</li>
+
+/<h5>Select File</h5>
+= form_for @devices_import do |f|
+ /- if @devices_import.errors.any?
+    = pluralize(@devices_import.errors.count, "error") prevented us from importing your spreadsheet. Please update your spreadsheet and try agin.
+      - @devices_import.errors.full_messages.each do |msg|
+        = msg
+
+ = f.file_field :file
+ = f.submit "Import File"

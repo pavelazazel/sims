@@ -9,5 +9,7 @@ Rails.application.routes.draw do
   resources :brands
   resources :locations
 
+  resources :devices_imports, only: [:new, :create]
+
   root 'devices#index'
 end
