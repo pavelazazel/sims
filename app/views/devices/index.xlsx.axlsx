@@ -1,0 +1,47 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+  project_heading = style.add_style(b: true, sz: 14)
+  heading = style.add_style(b: true)
+
+  wb.add_worksheet(name: "Devices") do |sheet|
+    # Add a title row
+    sheet.add_row ["Inventory Devices"], style: project_heading
+    # Add the date this was downloaded
+    sheet.add_row ["Downloaded at", Time.now.strftime("%b %-d %Y ; %H:%M")]
+    # Create the header row
+    sheet.add_row ["ID", "Device Name ID", "Inventory number", "Serial number", "Location ID", "Comment"], style: heading
+    # Create entries for each device
+    @devices.each do |device|
+      sheet.add_row [device.id, device.name.id, device.inventory_number, device.serial_number, device.location.id, device.comment]
+    end
+  end
+
+  wb.add_worksheet(name: "Names") do |sheet|
+    sheet.add_row ["ID", "Type ID", "Brand ID", "Model"], style: heading
+    @names.each do |name|
+      sheet.add_row [name.id, name.type.id, name.brand.id, name.model]
+    end
+  end
+
+  wb.add_worksheet(name: "Locations") do |sheet|
+    sheet.add_row ["ID", "Department", "Room"], style: heading
+    @locations.each do |location|
+      sheet.add_row [location.id, location.department, location.room]
+    end
+  end
+
+  wb.add_worksheet(name: "Types") do |sheet|
+    sheet.add_row ["ID", "Title"], style: heading
+    @types.each do |type|
+      sheet.add_row [type.id, type.title]
+    end
+  end
+
+  wb.add_worksheet(name: "Brands") do |sheet|
+    sheet.add_row ["ID", "Title"], style: heading
+    @brands.each do |brand|
+      sheet.add_row [brand.id, brand.title]
+    end
+  end
+end

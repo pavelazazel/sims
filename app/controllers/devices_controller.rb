@@ -2,6 +2,20 @@ class DevicesController < ApplicationController
 
 	def index
     @devices = Device.all
+    @names = Name.all
+    @locations = Location.all
+    @types = Type.all
+    @brands = Brand.all
+
+    # Excel export
+    respond_to do |format|
+      format.xlsx {
+        response.headers[
+          'Content-Disposition'
+        ] = "attachment; filename=devices.xlsx"
+      }
+      format.html { render :index }
+    end
 	end
 
   def show
