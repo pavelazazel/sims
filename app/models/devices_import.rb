@@ -5,53 +5,55 @@ class DevicesImport
   attr_accessor :file
 
   def initialize(attributes={})
-    attributes.each { |id, inventory_number| send("#{id}=", inventory_number) }
+    attributes.each { |name, value| send("#{name}=", value) }
   end
 
+  # This method tells rails that this object has no related table in our database.
   def persisted?
     false
   end
 
   def open_spreadsheet
     case File.extname(file.original_filename)
-    when ".csv" then Csv.new(file.path, nil, :ignore)
-    when ".xls" then Roo::Excel.new(file.path, nil, :ignore)
-    when ".xlsx" then Roo::Excelx.new(file.path)
+      when ".csv" then Csv.new(file.path, nil, :ignore)
+      when ".xls" then Roo::Excel.new(file.path, nil, :ignore)
+      when ".xlsx" then Roo::Excelx.new(file.path)
     else raise "Unknown file type: #{file.original_filename}"
     end
   end
 
-  def load_imported_devices
-    spreadsheet = open_spreadsheet
-    header = spreadsheet.row(1)
+  def load_imported_data(model)
+    spreadsheet = open_spreadsheet  # load from file
+    header = spreadsheet.sheet("#{model}s").row(1)  # first row - names of attributes
+
+    # from second row starting load data row by row
     (2..spreadsheet.last_row).map do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
-      # TODO: need do something with id. Attribute "id" can't be edit manually now.
-      #       So, find_by_id not working. Only import at empty database working now.
-      device = Device.find_by_id(row["id"]) || Device.new
-      row["id"] = i - 1
-      device.attributes = row.to_hash
-      device.created_at = Time.now
-      device.updated_at = Time.now
-      device
+      data = model.find_by_id(row["id"]) || model.new
+      data.attributes = row.to_hash
+      data.created_at = Time.now
+      data.updated_at = Time.now
+      data
     end
   end
 
-  def imported_devices
-    @imported_devices ||= load_imported_devices
-  end
-
   def save
-    if imported_devices.map(&:valid?).all?
-      imported_devices.each(&:save!)
-      true
-    else
-      imported_devices.each_with_index do |device, index|
-        device.errors.full_messages.each do |msg|
-          errors.add :base, "Row #{index + 6}: #{msg}"
+    models = [Type, Brand, Location, Name, Device]  # all models to array
+
+    # import to models data from excel spreadsheet
+    models.each do |model|
+      imported_data ||= load_imported_data(model)
+      if imported_data.map(&:valid?).all?
+        imported_data.each(&:save!)
+        true
+      else
+        imported_data.each_with_index do |data, index|
+          data.errors.full_messages.each do |msg|
+            errors.add :base, "Row #{index + 1}: #{msg}"
+          end
         end
+        false
       end
-      false
     end
   end
 
