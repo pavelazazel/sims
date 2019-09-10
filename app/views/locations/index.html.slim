@@ -1,17 +1,19 @@
-= link_to 'New location', new_location_path
-table
-  tr
+p
+= link_to '', new_location_path, class: 'ml-2 btn btn-sm btn-outline-success fas fa-plus'
+p
+
+table class="px-2 table table-dark table-sm table-striped table-bordered table-hover table-responsive"
+  tr class="bg-secondary"
     th id
     th Department
     th Room
+    th
 
   - @locations.each do |location|
    tr
      td = location.id
      td = location.department
      td = location.room
-     td = link_to 'Show', location_path(location)
-     td = link_to 'Edit', edit_location_path(location)
-     td = link_to 'Delete', location_path(location),
-          method: :delete,
-          data: { confirm: 'Are you sure?' }
+     td #{link_to '', location_path(location), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
+        #{link_to '', edit_location_path(location), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
+        #{link_to '', location_path(location), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }

@@ -1,0 +1,19 @@
+nav class="navbar sticky-top navbar-expand-lg navbar-dark"
+  div class="collapse navbar-collapse" id="navbarNav"
+    ul class="navbar-nav"
+      li class="nav-item #{'active' if controller_name == 'devices'}"
+        a class="nav-link" href="#{root_path}" Devices
+      li class="nav-item #{'active' if controller_name == 'names'}"
+        a class="nav-link" href="#{names_path}" Names
+      li class="nav-item #{'active' if controller_name == 'locations'}"
+        a class="nav-link" href="#{locations_path}" Locations
+      li class="nav-item #{'active' if controller_name == 'types'}"
+        a class="nav-link" href="#{types_path}" Types
+      li class="nav-item #{'active' if controller_name == 'brands'}"
+        a class="nav-link" href="#{brands_path}" Brands
+      li class="nav-item #{'active' if controller_name == 'devices_imports'}"
+        a class="nav-link" href="#{new_devices_import_path}" Upload from Excel
+      li class="nav-item"
+        a class="nav-link" href="#{devices_path(format: :xlsx)}" Download as Excel
+  button type="button" class="btn btn-outline-secondary navbar-btn navbar-right"
+    = link_to 'Sign out', destroy_user_session_path, :method => :delete, class: "text-reset text-decoration-none"

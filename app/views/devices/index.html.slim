@@ -1,14 +1,16 @@
-h4 #{link_to 'Names', names_path} #{link_to 'Locations', locations_path} #{link_to 'Types', types_path} #{link_to 'Brands', brands_path} #{link_to 'Upload from Excel', new_devices_import_path} #{link_to 'Download as Excel', devices_path(format: :xlsx)}
 p
-= link_to 'New device', new_device_path
-table
-  tr
+= link_to '', new_device_path, class: 'ml-2 btn btn-sm btn-outline-success fas fa-plus'
+p
+
+table class="table table-dark table-sm table-striped table-bordered table-hover"
+  tr class="bg-secondary"
     th id
     th Name
     th Inventory number
     th Serial number
     th Location
     th Comment
+    th
 
   - @devices.each do |device|
    tr
@@ -18,8 +20,6 @@ table
      td = device.serial_number
      td #{device.location.department} #{device.location.room}
      td = device.comment
-     td = link_to 'Show', device_path(device)
-     td = link_to 'Edit', edit_device_path(device)
-     td = link_to 'Delete', device_path(device),
-          method: :delete,
-          data: { confirm: 'Are you sure?' }
+     td #{link_to '', device_path(device), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
+        #{link_to '', edit_device_path(device), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
+        #{link_to '', device_path(device), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }

@@ -9,10 +9,10 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-dark">
     <%- if controller_name != 'sessions' %>
-      <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+      <%= render partial: 'layouts/nav'%>
     <% end %>
+    <%= yield %>
   </body>
 </html>

@@ -1,10 +1,14 @@
-= link_to 'New name', new_name_path
-table
-  tr
+p
+= link_to '', new_name_path, class: 'ml-2 btn btn-sm btn-outline-success fas fa-plus'
+p
+
+table class="px-2 table table-dark table-sm table-striped table-bordered table-hover table-responsive"
+  tr class="bg-secondary"
     th id
     th Type
     th Brand
     th Model
+    th
 
   - @names.each do |name|
    tr
@@ -12,8 +16,6 @@ table
      td = name.type.title
      td = name.brand.title
      td = name.model
-     td = link_to 'Show', name_path(name)
-     td = link_to 'Edit', edit_name_path(name)
-     td = link_to 'Delete', name_path(name),
-          method: :delete,
-          data: { confirm: 'Are you sure?' }
+     td #{link_to '', name_path(name), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
+        #{link_to '', edit_name_path(name), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
+        #{link_to '', name_path(name), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }

@@ -1,15 +1,17 @@
-= link_to 'New type', new_type_path
-table
-  tr
+p
+= link_to '', new_type_path, class: 'ml-2 btn btn-sm btn-outline-success fas fa-plus'
+p
+
+table class="px-2 table table-dark table-sm table-striped table-bordered table-hover table-responsive"
+  tr class="bg-secondary"
     th id
     th Title
+    th
 
   - @types.each do |type|
    tr
      td = type.id
      td = type.title
-     td = link_to 'Show', type_path(type)
-     td = link_to 'Edit', edit_type_path(type)
-     td = link_to 'Delete', type_path(type),
-          method: :delete,
-          data: { confirm: 'Are you sure?' }
+     td #{link_to '', type_path(type), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
+        #{link_to '', edit_type_path(type), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
+        #{link_to '', type_path(type), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }

@@ -1,12 +1,16 @@
 = form_with model: @type, local: true do |form|
   - if @type.errors.any?
       div id="error_explanation"
-        h2 #{pluralize(@type.errors.count, "error")} prohibited this type from being saved:
+        h2.text-danger #{pluralize(@type.errors.count, "error")} prohibited this type from being saved:
         - @type.errors.full_messages.each do |msg|
-          li
+          li.text-danger
             = msg
-  p
-    = form.label :title
-    = form.text_field :title
-  p
-    = form.submit
+
+  / TODO: fix: when errors appear, the structure below collapses
+  div class="form-group form-control-sm"
+    p
+      div class="form-row"
+        = form.label :title, class: 'ml-2 text-light col-1'
+        = form.text_field :title, class: 'bg-secondary col-3 text-light'
+    p
+      = form.submit class: "btn btn-outline-success"

@@ -39,6 +39,9 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'slim-rails'
 gem 'devise'
 gem 'dotenv-rails'
+gem 'bootstrap', '~> 4.3.1'
+gem 'jquery-rails'
+gem 'font-awesome-sass', '~> 5.9.0'
 
 #for import from excel
 gem 'roo', '~> 2.7.0'

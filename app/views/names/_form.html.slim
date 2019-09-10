@@ -1,18 +1,24 @@
 = form_with model: @name, local: true do |form|
   - if @name.errors.any?
       div id="error_explanation"
-        h2 #{pluralize(@name.errors.count, "error")} prohibited this name from being saved:
+        h2.text-danger #{pluralize(@name.errors.count, "error")} prohibited this name from being saved:
         - @name.errors.full_messages.each do |msg|
-          li
+          li.text-danger
             = msg
-  p
-    = form.label :type
-    = form.collection_select(:type_id, Type.all, :id, :title, prompt: true)
-  p
-    = form.label :brand
-    = form.collection_select(:brand_id, Brand.all, :id, :title, prompt: true)
-  p
-    = form.label :model
-    = form.text_field :model
-  p
-    = form.submit
+
+  / TODO: fix: when errors appear, the structure below collapses
+  div class="form-group form-control-sm"
+    p
+      div class="form-row"
+        = form.label :type, class: 'ml-2 text-light col-1'
+        = form.collection_select :type_id, Type.all, :id, :title, {:prompt => true}, {class: "dropdown col-3 bg-secondary text-light"}
+    p
+      div class="form-row"
+        = form.label :brand, class: 'ml-2 text-light col-1'
+        = form.collection_select :brand_id, Brand.all, :id, :title, {:prompt => true}, {class: "dropdown col-3 bg-secondary text-light"}
+    p
+      div class="form-row"
+        = form.label :model, class: 'ml-2 text-light col-1'
+        = form.text_field :model, class: 'bg-secondary col-3 text-light'
+    p
+      = form.submit class: "btn btn-outline-success"
