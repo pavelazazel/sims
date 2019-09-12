@@ -1,0 +1,36 @@
+= form_with model: @consumable, local: true do |form|
+  - if @consumable.errors.any?
+      div id="error_explanation"
+        h2.text-danger #{pluralize(@consumable.errors.count, "error")} prohibited this brand from being saved:
+        - @consumable.errors.full_messages.each do |msg|
+          li.text-danger
+            = msg
+
+  / TODO: fix: when errors appear, the structure below collapses
+  div class="form-group form-control-sm"
+    p
+      div class="form-row"
+        =form.label :title, class: 'ml-2 text-light col-2'
+        =form.text_field :title, class: 'bg-secondary col-3 text-light'
+    p
+      div class="form-row"
+        =form.label 'Device name', class: 'ml-2 text-light col-2'
+        =form.collection_select :name_id, Name.all, :id, :full_name, {prompt: true}, {class: 'dropdown col-3 bg-secondary text-light'}
+    p
+      div class="form-row"
+        =form.label :quantity_in_stock, class: 'ml-2 text-light col-2'
+        =form.number_field :quantity_in_stock, min: 0, class: 'bg-secondary col-3 text-light'
+    p
+      div class="form-row"
+        =form.label :quantity_in_use, class: 'ml-2 text-light col-2'
+        =form.number_field :quantity_in_use, min: 0, class: 'bg-secondary col-3 text-light'
+    p
+      div class="form-row"
+        =form.label :quantity_ready_to_refill, class: 'ml-2 text-light col-2'
+        =form.number_field :quantity_ready_to_refill, min: 0, class: 'bg-secondary col-3 text-light'
+    p
+      div class="form-row"
+        =form.label :quantity_at_refill, class: 'ml-2 text-light col-2'
+        =form.number_field :quantity_at_refill, min: 0, class: 'bg-secondary col-3 text-light'
+    p
+      =form.submit class: 'btn btn-outline-success'

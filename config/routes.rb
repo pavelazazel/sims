@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :types
   resources :brands
   resources :locations
+  resources :consumables
 
   resources :devices_imports, only: [:new, :create]
 
