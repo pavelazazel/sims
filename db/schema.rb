@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_12_094243) do
+ActiveRecord::Schema.define(version: 2019_09_12_134127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,15 @@ ActiveRecord::Schema.define(version: 2019_09_12_094243) do
     t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "consumable_movements", force: :cascade do |t|
+    t.bigint "consumable_id", null: false
+    t.bigint "location_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["consumable_id"], name: "index_consumable_movements_on_consumable_id"
+    t.index ["location_id"], name: "index_consumable_movements_on_location_id"
   end
 
   create_table "consumables", force: :cascade do |t|
@@ -77,6 +86,8 @@ ActiveRecord::Schema.define(version: 2019_09_12_094243) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "consumable_movements", "consumables"
+  add_foreign_key "consumable_movements", "locations"
   add_foreign_key "consumables", "names"
   add_foreign_key "devices", "locations"
   add_foreign_key "devices", "names"

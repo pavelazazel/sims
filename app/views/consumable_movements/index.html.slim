@@ -1,0 +1,19 @@
+p
+= link_to '', new_consumable_movement_path, class: 'ml-2 btn btn-sm btn-outline-success fas fa-plus'
+p
+
+table class="px-2 table table-dark table-sm table-striped table-bordered table-hover table-responsive"
+  tr class="bg-secondary"
+    th id
+    th Consumable
+    th Moved to location
+    th Date & Time
+    th
+
+  - @consumable_movements.each do |consumable_movement|
+   tr
+     td = consumable_movement.id
+     td = consumable_movement.consumable.title
+     td = consumable_movement.location.full_location
+     td = consumable_movement.created_at
+     td #{link_to '', consumable_movement_path(consumable_movement), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }

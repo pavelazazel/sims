@@ -1,0 +1,21 @@
+h3 class="text-light ml-2" Move Consumable
+= form_with model: @consumable_movement, local: true do |form|
+  - if @consumable_movement.errors.any?
+      div id="error_explanation"
+        h2.text-danger #{pluralize(@consumable_movement.errors.count, "error")} prohibited this brand from being saved:
+        - @consumable_movement.errors.full_messages.each do |msg|
+          li.text-danger
+            = msg
+
+  / TODO: fix: when errors appear, the structure below collapses
+  div class="form-group form-control-sm"
+    p
+      div class="form-row"
+        =form.label :consumable, class: 'ml-2 text-light col-2'
+        =form.collection_select :consumable_id, Consumable.all, :id, :title, {prompt: true}, {class: 'dropdown col-3 bg-secondary text-light'}
+    p
+      div class="form-row"
+        =form.label 'to location', class: 'ml-2 text-light col-2'
+        =form.collection_select :location_id, Location.all, :id, :full_location, {prompt: true}, {class: 'dropdown col-3 bg-secondary text-light'}
+    p
+      =form.submit 'Move', class: 'btn btn-outline-success'

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :consumables
 
   resources :devices_imports, only: [:new, :create]
+  resources :consumable_movements, only: [:index, :new, :create, :destroy]
 
   root 'devices#index'
 end
