@@ -1,0 +1,13 @@
+div style="height: 200px;"
+div align="center"
+  div.col-4 align="center"
+      = form_for(resource, as: resource_name, url: session_path(resource_name)) do |form|
+        h2.text-secondary Log in
+        .form-group
+            = form.label :username, autofocus: true, autocomplete: "username", class: 'sr-only'
+            = form.text_field :username, class: 'form-control form-control-lg bg-secondary'
+        .form-group
+            = form.label :password, class: 'sr-only'
+            = form.password_field :password, autocomplete: "current-password", class: 'form-control form-control-lg bg-secondary'
+        .actions
+            = form.submit 'Sign in', class: 'btn btn-lg btn-outline-primary btn-block'
