@@ -21,4 +21,8 @@
         = form.label :model, class: 'ml-2 text-light col-1'
         = form.text_field :model, class: 'bg-secondary col-3 text-light'
     p
+      div class="form-row"
+        =form.label :consumables, class: 'ml-2 text-light col-1'
+        =form.collection_select :consumable_ids, Consumable.all, :id, :title, {}, {multiple: true, size: 6, class: 'dropdown col-3 bg-secondary text-light'}
+    p
       = form.submit class: "btn btn-outline-success"

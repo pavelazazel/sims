@@ -14,6 +14,7 @@ class Name < ApplicationRecord
   belongs_to :type, optional: true
   belongs_to :brand, optional: true
   has_many :device, dependent: :destroy
+  has_and_belongs_to_many :consumable
 
   validates :type, :brand, :model,
     presence: true

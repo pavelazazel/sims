@@ -44,10 +44,11 @@ class ConsumablesController < ApplicationController
 
   def consumable_params
     params.require(:consumable).permit(:title,
-                                       :name_id,
+                                       :name,
                                        :quantity_in_stock,
                                        :quantity_in_use,
                                        :quantity_ready_to_refill,
-                                       :quantity_at_refill)
+                                       :quantity_at_refill,
+                                       :consumable_type_id)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_12_134127) do
+ActiveRecord::Schema.define(version: 2019_11_05_072924) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,16 +30,27 @@ ActiveRecord::Schema.define(version: 2019_09_12_134127) do
     t.index ["location_id"], name: "index_consumable_movements_on_location_id"
   end
 
+  create_table "consumable_types", force: :cascade do |t|
+    t.string "title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "consumables", force: :cascade do |t|
     t.string "title", null: false
-    t.bigint "name_id", null: false
     t.integer "quantity_in_stock", default: 0, null: false
     t.integer "quantity_in_use", default: 0, null: false
     t.integer "quantity_ready_to_refill", default: 0, null: false
     t.integer "quantity_at_refill", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name_id"], name: "index_consumables_on_name_id"
+    t.bigint "consumable_type_id", null: false
+    t.index ["consumable_type_id"], name: "index_consumables_on_consumable_type_id"
+  end
+
+  create_table "consumables_names", id: false, force: :cascade do |t|
+    t.integer "consumable_id"
+    t.integer "name_id"
   end
 
   create_table "devices", force: :cascade do |t|
@@ -88,7 +99,6 @@ ActiveRecord::Schema.define(version: 2019_09_12_134127) do
 
   add_foreign_key "consumable_movements", "consumables"
   add_foreign_key "consumable_movements", "locations"
-  add_foreign_key "consumables", "names"
   add_foreign_key "devices", "locations"
   add_foreign_key "devices", "names"
   add_foreign_key "names", "brands"

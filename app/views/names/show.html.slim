@@ -1,3 +1,6 @@
 p class='ml-2 text-light col-5' #{Name.human_attribute_name :type}: #{@name.type.title}
 p class='ml-2 text-light col-5' #{Name.human_attribute_name :brand}: #{@name.brand.title}
 p class='ml-2 text-light col-5' #{Name.human_attribute_name :model}: #{@name.model}
+p class='ml-2 text-light col-5' #{Consumable.human_attribute_name :consumables}:
+- @name.consumable.ids.each do |id|
+  p class='ml-5 text-light col-5' ➤ #{Consumable.find(id).title}

@@ -12,7 +12,7 @@
 
   <body class="bg-dark">
     <%- if controller_name != 'sessions' %>
-      <%= render partial: 'layouts/nav'%>
+      <%= render partial: 'layouts/nav' unless @disable_nav%>
     <% end %>
     <%= yield %>
   </body>

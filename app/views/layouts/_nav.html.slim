@@ -1,4 +1,4 @@
-nav class="navbar sticky-top navbar-expand-lg navbar-dark"
+nav class="navbar navbar-expand-lg navbar-dark"
   div class="collapse navbar-collapse" id="navbarNav"
     ul class="navbar-nav"
       li class="nav-item #{'active' if controller_name == 'devices'}"
@@ -7,6 +7,8 @@ nav class="navbar sticky-top navbar-expand-lg navbar-dark"
         a class="nav-link" href="#{consumables_path}" Consumables
       li class="nav-item #{'active' if controller_name == 'consumable_movements'}"
         a class="nav-link" href="#{consumable_movements_path}" Consumable movements
+      li class="nav-item #{'active' if controller_name == 'consumable_types'}"
+        a class="nav-link" href="#{consumable_types_path}" Consumable Types
       li class="nav-item #{'active' if controller_name == 'names'}"
         a class="nav-link" href="#{names_path}" Names
       li class="nav-item #{'active' if controller_name == 'locations'}"

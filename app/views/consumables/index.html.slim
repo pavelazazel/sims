@@ -5,8 +5,8 @@ p
 table class="px-2 table table-dark table-sm table-striped table-bordered table-hover table-responsive"
   tr class="bg-secondary"
     th id
+    th Type
     th Title
-    th Device name
     th In stock
     th In use
     th Ready to refill
@@ -16,8 +16,8 @@ table class="px-2 table table-dark table-sm table-striped table-bordered table-h
   - @consumables.each do |consumable|
    tr
      td = consumable.id
+     td = consumable.consumable_type.title
      td = consumable.title
-     td = consumable.name.full_name
      td = consumable.quantity_in_stock
      td = consumable.quantity_in_use
      td = consumable.quantity_ready_to_refill
