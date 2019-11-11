@@ -1,6 +1,4 @@
 class ConsumableMovementsController < ApplicationController
-  protect_from_forgery except: :move
-
   def index
     @consumable_movements = ConsumableMovement.all
   end
