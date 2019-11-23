@@ -18,4 +18,7 @@ class Device < ApplicationRecord
 
   validates :name, :inventory_number, :serial_number, :location,
     presence: true
+
+  ransack_alias :all_devices,
+                :id_or_name_type_title_or_name_brand_title_or_name_model_or_inventory_number_or_serial_number_or_location_department_or_location_room_or_comment
 end

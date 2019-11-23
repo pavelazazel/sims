@@ -1,11 +1,18 @@
 class DevicesController < ApplicationController
-
 	def index
     @devices = Device.all
     @names = Name.all
     @locations = Location.all
     @types = Type.all
     @brands = Brand.all
+
+    if !params[:q].nil?
+      if !params[:q][:all_devices_in_any].nil?
+        params[:q][:all_devices_in_any] = params[:q][:all_devices_in_any].split(' ')
+      end
+    end
+    @q = Device.ransack(params[:q])
+    @devices = @q.result
 
     # Excel export
     respond_to do |format|
