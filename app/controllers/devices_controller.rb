@@ -6,12 +6,7 @@ class DevicesController < ApplicationController
     @types = Type.all
     @brands = Brand.all
 
-    if !params[:q].nil?
-      if !params[:q][:all_devices_in_any].nil?
-        params[:q][:all_devices_in_any] = params[:q][:all_devices_in_any].split(' ')
-      end
-    end
-    @q = Device.ransack(params[:q])
+    @q = Device.ransack(params_for_ransack[:q])
     @devices = @q.result
 
     # Excel export
@@ -64,6 +59,21 @@ class DevicesController < ApplicationController
   private
 
   def device_params
-    params.require(:device).permit(:name_id, :inventory_number, :serial_number, :location_id, :comment)
+    params.require(:device).permit(:name_id, :inventory_number,
+                                   :serial_number, :location_id, :comment)
+  end
+
+  def params_for_ransack
+    # search by several words
+    if !params.dig(:q, :device_attrs_in_any).nil?
+      params[:search_field_value] = params[:q][:device_attrs_in_any]
+      params[:q][:combinator] = 'or'
+      params[:q][:groupings] = []
+      query_str = params[:q].delete('device_attrs_in_any')
+      query_str.split(' ').each_with_index do |word, index|
+        params[:q][:groupings][index] = { device_attrs_in: word }
+      end
+    end
+    params
   end
 end
