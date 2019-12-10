@@ -1,4 +1,6 @@
 class DevicesController < ApplicationController
+  protect_from_forgery except: :move
+
 	def index
     @devices = Device.all
     @names = Name.all
@@ -54,6 +56,27 @@ class DevicesController < ApplicationController
     @device = Device.find(params[:id])
     @device.destroy
     redirect_to devices_path
+  end
+
+  def get_departments
+    departments = Location::DEPARTMENTS
+    respond_to do |format|
+      format.json { render json: departments }
+    end
+  end
+
+  def get_locations
+    locations = Location.all
+    respond_to do |format|
+      format.json { render json: locations }
+    end
+  end
+
+  def move
+    isSaved = Device.update(params[:device_id], location_id: params[:location_id])
+    respond_to do |format|
+      format.json { render json: '{ "title": "' + isSaved.to_s + '" }' }
+    end
   end
 
   private
