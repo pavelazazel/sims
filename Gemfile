@@ -53,6 +53,7 @@ gem 'axlsx_rails'
 
 gem 'ransack'
 gem 'webpacker', '~> 4.x'
+gem 'image_processing', '~> 1.2'
 
 
 group :development, :test do

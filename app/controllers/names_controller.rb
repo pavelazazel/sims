@@ -42,6 +42,6 @@ class NamesController < ApplicationController
   private
 
   def name_params
-    params.require(:name).permit(:type_id, :brand_id, :model, consumable_ids: [])
+    params.require(:name).permit(:type_id, :brand_id, :model, :image, consumable_ids: [])
   end
 end

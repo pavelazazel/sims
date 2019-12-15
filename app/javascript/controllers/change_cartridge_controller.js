@@ -103,11 +103,15 @@ export default class extends Controller {
   }
 
   which_device(devices) {
-    this.instructionTarget.textContent = 'Введите номер принтера, которому требуется замена картриджа';
-    var devices_str = '';
+    this.instructionTarget.textContent = 'Введите порядковый номер принтера, которому требуется замена картриджа';
+    var devices_str = '<div class="container"> <div class="row">';
+    console.log(devices);
     devices.forEach(function(device, i, devices) {
-      devices_str += '<p>' + (i + 1) + ') ' + device[1];
+      devices_str += '<div class="col"><p><h1>' + (i + 1) + '</h1></p>'
+                  + '<p><img src=' + device[3] + '></p>'
+                  + device[1] + '</div>';
     });
+    devices_str += '</div></div>'
     this.infoTarget.innerHTML = devices_str;
     window.devices = devices;
     window.which_device = true;

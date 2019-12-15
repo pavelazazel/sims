@@ -1,4 +1,6 @@
 class ConsumableMovementsController < ApplicationController
+  protect_from_forgery except: :move
+
   def index
     @consumable_movements = ConsumableMovement.all
   end
@@ -39,7 +41,14 @@ class ConsumableMovementsController < ApplicationController
     devices_in_room = Device.where(location_id: location.id)
     devices_in_room.each do |device|
       if device.name.type.id == params[:type_id].to_i
-        devices << [device.name.id, device.name.full_name, location.id]
+        if device.name.image.attached?
+          img_path = rails_representation_url(device.name.image.variant(resize: '200x200'),
+                                              only_path: true)
+        end
+        devices << [device.name.id,
+                    device.name.full_name,
+                    location.id,
+                    img_path]
       end
     end
     devices = devices.uniq { |device| device[0] }
