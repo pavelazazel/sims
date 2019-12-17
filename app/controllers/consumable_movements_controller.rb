@@ -71,6 +71,9 @@ class ConsumableMovementsController < ApplicationController
     end
     if @consumable_movement.save
       consumable = '{ "title": "' + @consumable_movement.consumable.title + '", "movement_id": "' + @consumable_movement.id.to_s + '" }'
+      c = Consumable.find(@consumable_movement.consumable.id)
+      c.increment!(:quantity_ready_to_refill)
+      c.decrement!(:quantity_in_stock)
     else
       consumable = '{ "title": "" }'
     end
@@ -81,6 +84,9 @@ class ConsumableMovementsController < ApplicationController
 
   def abort
     @consumable_movement = ConsumableMovement.find(params[:movement_id])
+    c = Consumable.find(@consumable_movement.consumable.id)
+    c.decrement!(:quantity_ready_to_refill)
+    c.increment!(:quantity_in_stock)
     @consumable_movement.destroy
   end
 
