@@ -2,7 +2,7 @@ class ConsumableMovementsController < ApplicationController
   protect_from_forgery except: :move
 
   def index
-    @consumable_movements = ConsumableMovement.paginate(page: params[:page])
+    @consumable_movements = ConsumableMovement.page(params[:page])
   end
 
   def new

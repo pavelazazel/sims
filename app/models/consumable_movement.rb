@@ -15,4 +15,6 @@ class ConsumableMovement < ApplicationRecord
 
   validates :consumable, :location,
     presence: true
+
+  self.per_page = 15
 end
