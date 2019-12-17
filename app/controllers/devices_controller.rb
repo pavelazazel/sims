@@ -9,7 +9,7 @@ class DevicesController < ApplicationController
     @brands = Brand.all
 
     @q = Device.ransack(params_for_ransack[:q])
-    @devices = @q.result
+    @devices = @q.result.page(params[:page])
 
     # Excel export
     respond_to do |format|

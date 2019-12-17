@@ -21,4 +21,6 @@ class Device < ApplicationRecord
 
   ransack_alias :device_attrs,
                 :id_or_name_type_title_or_name_brand_title_or_name_model_or_inventory_number_or_serial_number_or_location_department_or_location_room_or_comment
+
+  self.per_page = 15
 end
