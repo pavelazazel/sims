@@ -44,8 +44,8 @@ div data-controller='move-device'
           #{link_to '', device_path(device), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }
           #{link_to '', 'javascript:;', id: device.id, 'data-action': 'click->move-device#modal', class: 'btn btn-sm btn-outline-primary mr-1 fas fa-shipping-fast'}
 
-= will_paginate @devices
-
   .modal role="dialog" tabindex="-1" data-target="move-device.modal" data-backdrop="false"
     .modal-dialog role="document"
       .modal-content
+
+= will_paginate @devices

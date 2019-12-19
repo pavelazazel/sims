@@ -5,7 +5,7 @@ export default class extends Controller {
   static targets = [ 'modal', 'roomSelector', 'departmentSelector' ]
 
     modal(event) {
-      window.deviceID = event.currentTarget.id
+      window.deviceID = event.currentTarget.id;
       var modal = new Modal(this.modalTarget, {});
       var request_departments = this.create_request('GET', 'devices/get_departments', false);
       var request_locations = this.create_request('GET', 'devices/get_locations', false);
