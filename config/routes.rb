@@ -12,9 +12,9 @@ Rails.application.routes.draw do
 
   resources :devices
   resources :names
-  resources :types
-  resources :brands
-  resources :locations
+  resources :types, except: [:show]
+  resources :brands, except: [:show]
+  resources :locations, except: [:show]
   resources :consumables
 
   resources :devices_imports, only: [:new, :create]

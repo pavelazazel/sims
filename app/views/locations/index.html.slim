@@ -14,6 +14,5 @@ table class="px-2 table table-dark table-sm table-striped table-bordered table-h
      td = location.id
      td = location.department
      td = location.room
-     td #{link_to '', location_path(location), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
-        #{link_to '', edit_location_path(location), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
+     td #{link_to '', edit_location_path(location), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
         #{link_to '', location_path(location), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }

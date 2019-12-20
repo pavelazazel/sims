@@ -12,6 +12,5 @@ table class="px-2 table table-dark table-sm table-striped table-bordered table-h
    tr
      td = type.id
      td = type.title
-     td #{link_to '', type_path(type), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
-        #{link_to '', edit_type_path(type), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
+     td #{link_to '', edit_type_path(type), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
         #{link_to '', type_path(type), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }

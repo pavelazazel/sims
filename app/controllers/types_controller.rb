@@ -3,10 +3,6 @@ class TypesController < ApplicationController
     @types = Type.all
   end
 
-  def show
-    @type = Type.find(params[:id])
-  end
-
   def new
     @type = Type.new
   end
