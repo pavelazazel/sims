@@ -1,12 +1,15 @@
 class DevicesController < ApplicationController
   protect_from_forgery except: :move
 
-	def index
-    @devices = Device.all
+  def index
+    @devices_all = Device.all
     @names = Name.all
     @locations = Location.all
     @types = Type.all
     @brands = Brand.all
+    @consumables = Consumable.all
+    @consumable_types = ConsumableType.all
+    @consumable_movements = ConsumableMovement.all
 
     @q = Device.ransack(params_for_ransack[:q])
     @devices = @q.result.page(params[:page])
@@ -16,19 +19,19 @@ class DevicesController < ApplicationController
       format.xlsx {
         response.headers[
           'Content-Disposition'
-        ] = "attachment; filename=devices.xlsx"
+        ] = "attachment; filename=stock.xlsx"
       }
       format.html { render :index }
     end
-	end
+  end
 
   def show
     @device = Device.find(params[:id])
   end
 
-	def new
+  def new
     @device = Device.new
-	end
+  end
 
   def edit
     @device = Device.find(params[:id])
@@ -73,9 +76,9 @@ class DevicesController < ApplicationController
   end
 
   def move
-    isSaved = Device.update(params[:device_id], location_id: params[:location_id])
+    is_saved = Device.update(params[:device_id], location_id: params[:location_id])
     respond_to do |format|
-      format.json { render json: '{ "title": "' + isSaved.to_s + '" }' }
+      format.json { render json: '{ "title": "' + is_saved.to_s + '" }' }
     end
   end
 
@@ -88,7 +91,7 @@ class DevicesController < ApplicationController
 
   def params_for_ransack
     # search by several words
-    if !params.dig(:q, :device_attrs_in_any).nil?
+    unless params.dig(:q, :device_attrs_in_any).nil?
       params[:search_field_value] = params[:q][:device_attrs_in_any]
       params[:q][:combinator] = 'or'
       params[:q][:groupings] = []

@@ -4,46 +4,76 @@ wb.styles do |style|
   project_heading = style.add_style(b: true, sz: 14)
   heading = style.add_style(b: true)
 
-  wb.add_worksheet(name: "Info") do |sheet|
+  wb.add_worksheet(name: 'Info') do |sheet|
     # Add a title row
-    sheet.add_row ["Inventory Devices"], style: project_heading
+    sheet.add_row ['Inventory Devices'], style: project_heading
     # Add the date this was downloaded
-    sheet.add_row ["Downloaded at", Time.now.strftime("%b %-d %Y ; %H:%M")]
+    sheet.add_row ['Downloaded at', Time.now.strftime('%b %-d %Y ; %H:%M')]
   end
 
-  wb.add_worksheet(name: "Devices") do |sheet|
-    sheet.add_row ["id", "name_id", "inventory_number", "serial_number", "location_id", "comment"], style: heading
+  wb.add_worksheet(name: 'Devices') do |sheet|
+    sheet.add_row %w[id name_id inventory_number serial_number location_id comment], style: heading
     # Create entries for each device
-    @devices.each do |device|
+    @devices_all.each do |device|
       sheet.add_row [device.id, device.name.id, device.inventory_number, device.serial_number, device.location.id, device.comment]
     end
   end
 
-  wb.add_worksheet(name: "Names") do |sheet|
-    sheet.add_row ["id", "type_id", "brand_id", "model"], style: heading
+  wb.add_worksheet(name: 'Names') do |sheet|
+    sheet.add_row %w[id type_id brand_id model], style: heading
     @names.each do |name|
       sheet.add_row [name.id, name.type.id, name.brand.id, name.model]
     end
   end
 
-  wb.add_worksheet(name: "Locations") do |sheet|
-    sheet.add_row ["id", "department", "room"], style: heading
+  wb.add_worksheet(name: 'Locations') do |sheet|
+    sheet.add_row %w[id department room], style: heading
     @locations.each do |location|
       sheet.add_row [location.id, location.department, location.room]
     end
   end
 
-  wb.add_worksheet(name: "Types") do |sheet|
-    sheet.add_row ["id", "title"], style: heading
+  wb.add_worksheet(name: 'Types') do |sheet|
+    sheet.add_row %w[id title], style: heading
     @types.each do |type|
       sheet.add_row [type.id, type.title]
     end
   end
 
-  wb.add_worksheet(name: "Brands") do |sheet|
-    sheet.add_row ["id", "title"], style: heading
+  wb.add_worksheet(name: 'Brands') do |sheet|
+    sheet.add_row %w[id title], style: heading
     @brands.each do |brand|
       sheet.add_row [brand.id, brand.title]
+    end
+  end
+
+  wb.add_worksheet(name: 'Consumables') do |sheet|
+    sheet.add_row %w[id title quantity_in_stock quantity_in_use quantity_ready_to_refill quantity_at_refill consumable_type_id], style: heading
+    @consumables.each do |consumable|
+      sheet.add_row [consumable.id, consumable.title, consumable.quantity_in_stock, consumable.quantity_in_use, consumable.quantity_ready_to_refill, consumable.quantity_at_refill, consumable.consumable_type_id]
+    end
+  end
+
+  wb.add_worksheet(name: 'ConsumableTypes') do |sheet|
+    sheet.add_row %w[id title], style: heading
+    @consumable_types.each do |consumable_type|
+      sheet.add_row [consumable_type.id, consumable_type.title]
+    end
+  end
+
+  wb.add_worksheet(name: 'ConsumablesNames') do |sheet|
+    sheet.add_row %w[name_id consumable_id], style: heading
+    @names.each do |name|
+      name.consumable.ids.each do |consumable_id|
+        sheet.add_row [name.id, consumable_id]
+      end
+    end
+  end
+
+  wb.add_worksheet(name: 'ConsumableMovements') do |sheet|
+    sheet.add_row %w[id consumable_id location_id], style: heading
+    @consumable_movements.each do |consumable_movement|
+      sheet.add_row [consumable_movement.id, consumable_movement.consumable_id, consumable_movement.location_id]
     end
   end
 end
