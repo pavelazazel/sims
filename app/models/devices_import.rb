@@ -65,6 +65,7 @@ class DevicesImport
       imported_data ||= load_imported_data(model)
       if imported_data.map(&:valid?).all?
         imported_data.each(&:save!)
+        ActiveRecord::Base.connection.execute "ALTER SEQUENCE #{model.to_s.underscore}s_id_seq RESTART WITH #{model.maximum(:id).to_i.next}"
         true
       else
         imported_data.each_with_index do |data, index|
