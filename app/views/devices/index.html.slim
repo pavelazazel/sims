@@ -48,4 +48,4 @@ div data-controller='move-device'
     .modal-dialog role="document"
       .modal-content
 
-= will_paginate @devices
+= will_paginate @devices if params[:search_field_value].blank?

@@ -12,7 +12,12 @@ class DevicesController < ApplicationController
     @consumable_movements = ConsumableMovement.all
 
     @q = Device.ransack(params_for_ransack[:q])
-    @devices = @q.result.page(params[:page])
+    # for disable paginate if any filter set
+    if params[:search_field_value].blank?
+      @devices = @q.result.page(params[:page])
+    else
+      @devices = @q.result
+    end
 
     # Excel export
     respond_to do |format|
