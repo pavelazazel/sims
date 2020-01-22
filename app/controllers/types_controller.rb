@@ -23,7 +23,7 @@ class TypesController < ApplicationController
   def update
     @type = Type.find(params[:id])
     if @type.update(type_params)
-      redirect_to @type
+      redirect_to types_path
     else
       render :edit
     end

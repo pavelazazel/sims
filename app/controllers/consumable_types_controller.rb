@@ -23,7 +23,7 @@ class ConsumableTypesController < ApplicationController
   def update
     @consumable_type = ConsumableType.find(params[:id])
     if @consumable_type.update(consumable_type_params)
-      redirect_to @consumable_type
+      redirect_to consumable_types_path
     else
       render :edit
     end
