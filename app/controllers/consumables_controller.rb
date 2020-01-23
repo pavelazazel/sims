@@ -1,6 +1,6 @@
 class ConsumablesController < ApplicationController
   def index
-    @consumables = Consumable.all
+    @consumables = Consumable.order(:id)
   end
 
   def show

@@ -1,6 +1,6 @@
 class ConsumableTypesController < ApplicationController
   def index
-    @consumable_types = ConsumableType.all
+    @consumable_types = ConsumableType.order(:id)
   end
 
   def new

@@ -1,6 +1,6 @@
 class NamesController < ApplicationController
   def index
-    @names = Name.all
+    @names = Name.order(:id)
   end
 
   def show

@@ -1,6 +1,6 @@
 class TypesController < ApplicationController
   def index
-    @types = Type.all
+    @types = Type.order(:id)
   end
 
   def new
