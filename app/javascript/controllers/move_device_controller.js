@@ -2,7 +2,7 @@ import { Controller } from 'stimulus'
 import { Modal } from 'bootstrap.native'
 
 export default class extends Controller {
-  static targets = [ 'modal', 'roomSelector', 'departmentSelector' ]
+  static targets = [ 'modal', 'roomSelector', 'departmentSelector', 'swapSwitch' ]
 
     modal(event) {
       window.deviceID = event.currentTarget.id;
@@ -36,9 +36,16 @@ export default class extends Controller {
             + departmentSelector
           +'</select>'
           +'<p></p>'
-          +'Room:'
-          +'<select class="custom-select" size="5" data-target="move-device.roomSelector">'
+          +'Room: <div data-target="move-device.roomSelector">'
+          // element <select> must be firstChild of div roomSelector!
+          +'<select class="custom-select" size="6" data-action="change->move-device#selectRoom">'
           +'</select>'
+          +'</div>'
+          +'<p></p>'
+          +'<div class="custom-control custom-switch">'
+            +'<input type="checkbox" class="custom-control-input" disabled id="swapSwitch" data-target="move-device.swapSwitch">'
+            +'<label class="custom-control-label" for="swapSwitch" data-toggle="tooltip" data-placement="bottom" title="Swap availiable only if in the target location only one device of the same type">Swap with a device of the same type</label>'
+          +'</div>'
         +'</div>'
         +'<div class="modal-footer">'
           +'<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>'
@@ -50,24 +57,42 @@ export default class extends Controller {
 
     selectDepartment() {
       var roomSelectorContent;
+      roomSelectorContent = '<select class="custom-select" size="6" data-action="change->move-device#selectRoom">'
       for (var i = 0; i < window.locations.length; i++) {
         if (window.locations[i].department == this.departmentSelectorTarget.value) {
           roomSelectorContent += '<option value="' + i + '">' + window.locations[i].room + '</option>';
         }
       }
-      this.roomSelectorTarget.innerHTML = roomSelectorContent;
+      roomSelectorContent += '</select>'
+      this.roomSelectorTarget.firstChild.innerHTML = roomSelectorContent;
+    }
+
+    selectRoom() {
+      var request = this.create_request('POST', 'devices/is_swappable', false);
+      var swap;
+      request.onload = function() {
+        swap = JSON.parse(request.response).swap == 'true';
+      };
+      request.send('device_id=' + window.deviceID + '&location_id=' + window.locations[this.roomSelectorTarget.firstChild.value].id);
+      if (swap) {
+        this.swapSwitchTarget.removeAttribute("disabled");
+      } else {
+        this.swapSwitchTarget.setAttribute("disabled", "");
+        this.swapSwitchTarget.checked = false;
+      }
     }
 
     move() {
-      if (Number.isInteger(parseInt(this.roomSelectorTarget.value))) {
+      if (Number.isInteger(parseInt(this.roomSelectorTarget.firstChild.value))) {
         var request = this.create_request('POST', 'devices/move', false);
         var isSaved;
         request.onload = function() {
           isSaved = JSON.parse(request.response);
         };
-        request.send('device_id=' + window.deviceID + '&location_id=' + window.locations[this.roomSelectorTarget.value].id);
-      }
-      else {
+        request.send('device_id=' + window.deviceID
+                   + '&location_id=' + window.locations[this.roomSelectorTarget.firstChild.value].id
+                   + '&swap=' + this.swapSwitchTarget.checked);
+      } else {
         alert('Please, select location');
       }
 

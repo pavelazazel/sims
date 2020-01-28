@@ -1,5 +1,5 @@
 class DevicesController < ApplicationController
-  protect_from_forgery except: :move
+  protect_from_forgery except: [:move, :is_swappable]
 
   def index
     @devices_all = Device.all
@@ -13,11 +13,11 @@ class DevicesController < ApplicationController
 
     @q = Device.order(:id).ransack(params_for_ransack[:q])
     # for disable paginate if any filter set
-    if params[:search_field_value].blank?
-      @devices = @q.result.page(params[:page])
-    else
-      @devices = @q.result
-    end
+    @devices = if params[:search_field_value].blank?
+                 @q.result.page(params[:page])
+               else
+                 @q.result
+               end
 
     # Excel export
     respond_to do |format|
@@ -74,14 +74,40 @@ class DevicesController < ApplicationController
   end
 
   def get_locations
-    locations = Location.all
+    locations = Location.all.sort { |x, y| x.room.to_i <=> y.room.to_i }
     respond_to do |format|
       format.json { render json: locations }
     end
   end
 
+  def is_swappable
+    type_id = Device.find(params[:device_id]).name.type.id
+    devices_in_room = Device.where(location_id: params[:location_id])
+    count = 0
+    devices_in_room.each do |d|
+      count += 1 if d.name.type.id == type_id
+    end
+    respond_to do |format|
+      format.json { render json: '{ "swap": "' + (count == 1).to_s + '" }' }
+    end
+  end
+
   def move
-    is_saved = Device.update(params[:device_id], location_id: params[:location_id])
+    if ActiveModel::Type::Boolean.new.cast(params[:swap])
+      swap_device_id = nil
+      target_device = Device.find(params[:device_id])
+      devices_in_room = Device.where(location_id: params[:location_id])
+      devices_in_room.each do |d|
+        if d.name.type.id == target_device.name.type.id
+          swap_device_id = d.id
+          break
+        end
+      end
+      is_saved = Device.update(swap_device_id, location_id: target_device.location.id) &&
+                 Device.update(target_device.id, location_id: params[:location_id])
+    else
+      is_saved = Device.update(params[:device_id], location_id: params[:location_id])
+    end
     respond_to do |format|
       format.json { render json: '{ "title": "' + is_saved.to_s + '" }' }
     end
