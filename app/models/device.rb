@@ -19,8 +19,8 @@ class Device < ApplicationRecord
   validates :name, :inventory_number, :serial_number, :location,
     presence: true
 
-  ransack_alias :device_attrs,
-                :id_or_name_type_title_or_name_brand_title_or_name_model_or_inventory_number_or_serial_number_or_location_department_or_location_room_or_comment
+  ransack_alias :name, :name_type_title_or_name_brand_title_or_name_model
+  ransack_alias :location, :location_department_or_location_room
 
   self.per_page = 15
 end

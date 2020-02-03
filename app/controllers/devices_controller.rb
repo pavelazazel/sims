@@ -10,14 +10,11 @@ class DevicesController < ApplicationController
     @consumables = Consumable.all
     @consumable_types = ConsumableType.all
     @consumable_movements = ConsumableMovement.all
+    @will_paginate = true
 
-    @q = Device.order(:id).ransack(params_for_ransack[:q])
-    # for disable paginate if any filter set
-    @devices = if params[:search_field_value].blank?
-                 @q.result.page(params[:page])
-               else
-                 @q.result
-               end
+    @q = Device.order(:id).ransack(params_for_ransack(params.dup))
+    # for disable paginate if name or location filter set
+    @devices = @will_paginate ? @q.result.page(params[:page]) : @q.result
 
     # Excel export
     respond_to do |format|
@@ -120,17 +117,23 @@ class DevicesController < ApplicationController
                                    :serial_number, :location_id, :comment)
   end
 
-  def params_for_ransack
+  def params_for_ransack(ransack_params)
     # search by several words
-    unless params.dig(:q, :device_attrs_in_any).nil?
-      params[:search_field_value] = params[:q][:device_attrs_in_any]
-      params[:q][:combinator] = 'or'
-      params[:q][:groupings] = []
-      query_str = params[:q].delete('device_attrs_in_any')
-      query_str.split(' ').each_with_index do |word, index|
-        params[:q][:groupings][index] = { device_attrs_in: word }
-      end
+    unless ransack_params.dig(:q, :name_cont).blank? && ransack_params.dig(:q, :location_cont).blank?
+      @will_paginate = false
+      ransack_params[:q][:combinator] = 'and'
+      ransack_params[:q][:groupings] = []
+      ransack_params = split_query_words(:name_cont, ransack_params)
+      ransack_params = split_query_words(:location_cont, ransack_params)
     end
-    params
+    ransack_params[:q]
+  end
+
+  def split_query_words(search_field, ransack_params)
+    query_str = ransack_params[:q].delete(search_field.to_s)
+    query_str.split(' ').each do |word|
+      ransack_params[:q][:groupings] << { search_field => word }
+    end
+    ransack_params
   end
 end

@@ -1,12 +1,39 @@
+css:
+  input::-webkit-input-placeholder {
+  color: #adb5bd !important;
+  }
 p
-.container-fluid
-  .row
-    .col-sm-2
-      = link_to '', new_device_path, class: 'btn btn-sm btn-outline-success fas fa-plus'
-    .col-sm-10.text-right
-      = search_form_for @q do |f|
-        = f.search_field :device_attrs_in_any, value: params[:search_field_value], class: 'form-control-sm bg-secondary text-light col-3'
-        = f.submit :Search, class: 'btn btn-sm btn-outline-info ml-2'
+.d-flex
+  .p-2.flex-grow-1.mr-auto
+    = link_to new_device_path, class: 'btn btn-sm btn-outline-success ml-2'
+      = icon 'fas', 'plus'
+  .p-2.text-right
+    = search_form_for @q do |f|
+      = f.search_field :id_eq,
+                       placeholder: 'ID',
+                       class: 'form-control-sm bg-secondary text-light col-sm-1'
+      = f.search_field :name_cont,
+                       value: params.dig(:q, :name_cont),
+                       placeholder: 'Device name',
+                       class: 'form-control-sm bg-secondary text-light ml-1'
+      = f.search_field :inventory_number_cont,
+                       placeholder: 'Inventory №',
+                       class: 'form-control-sm bg-secondary text-light ml-1'
+      = f.search_field :serial_number_cont,
+                       placeholder: 'Serial №',
+                       class: 'form-control-sm bg-secondary text-light ml-1'
+      = f.search_field :location_cont,
+                       value: params.dig(:q, :location_cont),
+                       placeholder: 'Location',
+                       class: 'form-control-sm bg-secondary text-light ml-1'
+      = f.search_field :comment_cont,
+                       placeholder: 'Comment',
+                       class: 'form-control-sm bg-secondary text-light ml-1'
+      = button_tag class: 'btn btn-sm btn-outline-info ml-1'
+        = icon 'fas', 'search'
+      = link_to devices_path, class: 'btn btn-sm btn-outline-danger ml-1 mr-2'
+        = icon 'fas', 'window-close'
+
 p
 div data-controller='move-device'
   table class="table table-dark table-sm table-striped table-bordered table-hover"
@@ -48,4 +75,4 @@ div data-controller='move-device'
     .modal-dialog role="document"
       .modal-content
 
-= will_paginate @devices if params[:search_field_value].blank?
+= will_paginate @devices if @will_paginate
