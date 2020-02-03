@@ -7,4 +7,4 @@
       p class='ml-2 text-light col-5' #{Device.human_attribute_name :location}: #{@device.location.full_location}
       p class='ml-2 text-light col-5' #{Device.human_attribute_name :comment}: #{@device.comment}
     .col
-      =image_tag @device.name.image.variant(resize: "200x200") if @device.name.image.attached?
+      =image_tag @device.name.image.variant(resize: "350x350") if @device.name.image.attached?

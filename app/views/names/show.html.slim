@@ -8,4 +8,4 @@
       - @name.consumable.ids.each do |id|
         p class='ml-5 text-light col-5' ➤ #{Consumable.find(id).title}
     .col
-      =image_tag @name.image.variant(resize: '200x200') if @name.image.attached?
+      =image_tag @name.image.variant(resize: '350x350') if @name.image.attached?
