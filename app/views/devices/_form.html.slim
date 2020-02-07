@@ -7,26 +7,26 @@
             =msg
 
   / TODO: fix: when errors appear, the structure below collapses
-  div class="form-group form-control-sm"
+  .form-group.form-control-sm data-controller='choice'
     p
-      div class="form-row"
+      .form-row
         =form.label :name, class: 'ml-2 text-light col-2'
-        =form.collection_select :name_id, Name.all, :id, :full_name, {prompt: false}, {size: 6, class: 'dropdown col-3 bg-secondary text-light'}
+        =form.collection_select :name_id, Name.all, :id, :full_name, { prompt: true }, { 'data-target': 'choice.select1' }
     p
-      div class="form-row"
+      .form-row
         =form.label :inventory_number, class: 'ml-2 text-light col-2'
-        =form.text_field :inventory_number, class: 'bg-secondary col-3 text-light'
+        =form.text_field :inventory_number, class: 'bg-secondary text-light custom-input'
     p
-      div class="form-row"
+      .form-row
         =form.label :serial_number, class: 'ml-2 text-light col-2'
-        =form.text_field :serial_number, class: 'bg-secondary col-3 text-light'
+        =form.text_field :serial_number, class: 'bg-secondary text-light custom-input'
     p
-      div class="form-row"
+      .form-row
         =form.label :location, class: 'ml-2 text-light col-2'
-        =form.collection_select :location_id, Location.all, :id, :full_location, {prompt: false}, {size: 6, class: 'dropdown col-3 bg-secondary text-light'}
+        =form.collection_select :location_id, Location.all, :id, :full_location, { prompt: true }, { 'data-target': 'choice.select2' }
     p
-      div class="form-row"
+      .form-row
         =form.label :comment, class: 'ml-2 text-light col-2'
-        =form.text_area :comment, class: 'text-light col-3 bg-secondary text-light'
+        =form.text_area :comment, class: 'text-light bg-secondary text-light', style: 'height: 150px; width: 345px'
     p
       =form.submit class: 'btn btn-outline-success'

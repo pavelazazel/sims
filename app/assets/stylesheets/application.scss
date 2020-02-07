@@ -1,4 +1,7 @@
 // Custom bootstrap variables must be set or imported *before* bootstrap.
+@import 'choices.js/public/assets/styles/choices.min.css';
+@import "choice";
+@import "bootstrap-custom";
 @import "bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";

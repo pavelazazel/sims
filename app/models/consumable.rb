@@ -24,4 +24,8 @@ class Consumable < ApplicationRecord
             :quantity_at_refill,
             :consumable_type_id,
     presence: true
+
+  def full_consumable
+    "#{consumable_type.title} #{title}"
+  end
 end

@@ -7,10 +7,10 @@
             = msg
 
   / TODO: fix: when errors appear, the structure below collapses
-  div class="form-group form-control-sm"
+  .form-group.form-control-sm
     p
-      div class="form-row"
+      .form-row
         = form.label :title, class: 'ml-2 text-light col-1'
-        = form.text_field :title, class: 'bg-secondary col-3 text-light'
+        = form.text_field :title, class: 'bg-secondary text-light custom-input'
     p
       = form.submit class: "btn btn-outline-success"

@@ -7,13 +7,14 @@
             = msg
 
   / TODO: fix: when errors appear, the structure below collapses
-  div class="form-group form-control-sm"
-      div class="form-row"
-      p
+  .form-group.form-control-sm data-controller='choice'
+    p
+      .form-row
         = form.label :department, class: 'ml-2 text-light col-1'
-        = form.collection_select :department, Location::DEPARTMENTS, :itself, :to_s, {:prompt => true}, {class: "dropdown col-3 bg-secondary text-light"}
-      p
+        = form.collection_select :department, Location::DEPARTMENTS, :itself, :to_s, { prompt: true }, { 'data-target': 'choice.selectNoSearch' }
+    p
+      .form-row
         = form.label :room, class: 'ml-2 text-light col-1'
-        = form.text_field :room, class: 'bg-secondary col-3 text-light'
-      p
-        = form.submit class: "btn btn-outline-success"
+        = form.text_field :room, class: 'bg-secondary text-light custom-input'
+    p
+      = form.submit class: 'btn btn-outline-success'
