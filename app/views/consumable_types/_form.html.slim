@@ -1,4 +1,4 @@
-= form_with model: @consumable_type, local: true do |form|
+= form_with model: @consumable_type, html: { autocomplete: 'off' }, local: true do |form|
   - if @consumable_type.errors.any?
       div id="error_explanation"
         h2.text-danger #{pluralize(@consumable_type.errors.count, "error")} prohibited this consumable type from being saved:

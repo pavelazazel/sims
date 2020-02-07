@@ -1,4 +1,4 @@
-= form_with model: @type, local: true do |form|
+= form_with model: @type, html: { autocomplete: 'off' }, local: true do |form|
   - if @type.errors.any?
       div id="error_explanation"
         h2.text-danger #{pluralize(@type.errors.count, "error")} prohibited this type from being saved:

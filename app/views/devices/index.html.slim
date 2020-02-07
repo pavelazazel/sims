@@ -8,7 +8,7 @@ p
     = link_to new_device_path, class: 'btn btn-sm btn-outline-success ml-2'
       = icon 'fas', 'plus'
   .p-2.text-right
-    = search_form_for @q do |f|
+    = search_form_for @q, html: { autocomplete: 'off' } do |f|
       = f.search_field :id_eq,
                        placeholder: 'ID',
                        class: 'form-control-sm bg-secondary text-light col-sm-1'
