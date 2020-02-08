@@ -2,12 +2,11 @@ css:
   input::-webkit-input-placeholder {
   color: #adb5bd !important;
   }
-p
 .d-flex
-  .p-2.flex-grow-1.mr-auto
+  .p-1.flex-grow-1.mr-auto
     = link_to new_device_path, class: 'btn btn-sm btn-outline-success ml-2'
       = icon 'fas', 'plus'
-  .p-2.text-right
+  .p-1.text-right
     = search_form_for @q, html: { autocomplete: 'off' } do |f|
       = f.search_field :id_eq,
                        placeholder: 'ID',
@@ -75,4 +74,9 @@ div data-controller='move-device'
     .modal-dialog role="document"
       .modal-content
 
-= will_paginate @devices if @will_paginate
+.d-flex
+  .p-1.flex-grow-1.mr-auto = will_paginate @devices if @will_paginate
+  .p-1.text-right.mr-2.text-monospace
+    button.btn.btn-sm.btn-secondary.disabled
+      | Found
+      span.badge.badge-light.ml-2 #{@q.result.size}
