@@ -1,28 +1,37 @@
-p
-= link_to new_consumable_path, class: 'ml-3 btn btn-sm btn-outline-success'
-  = icon 'fas', 'plus'
-p
+div data-controller='refill-consumable'
+  p
+  = link_to new_consumable_path, class: 'ml-3 btn btn-sm btn-outline-success'
+    = icon 'fas', 'plus'
 
-table class="px-2 table table-dark table-sm table-striped table-bordered table-hover table-responsive"
-  tr class="bg-secondary"
-    th id
-    th Type
-    th Title
-    th In stock
-    th In use
-    th Ready to refill
-    th At refill
-    th
+  = link_to 'javascript:;', 'data-action': 'refill-consumable#modal', class: 'ml-3 btn btn-sm btn-outline-primary'
+    = icon 'fas', 'recycle', 'Refill'
+  p
 
-  - @consumables.each do |consumable|
-   tr
-     td = consumable.id
-     td = consumable.consumable_type.title
-     td = consumable.title
-     td = consumable.quantity_in_stock
-     td = consumable.quantity_in_use
-     td = consumable.quantity_ready_to_refill
-     td = consumable.quantity_at_refill
-     td #{link_to '', consumable_path(consumable), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
-        #{link_to '', edit_consumable_path(consumable), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
-        #{link_to '', consumable_path(consumable), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }
+  table class="px-2 table table-dark table-sm table-striped table-bordered table-hover table-responsive"
+    tr class="bg-secondary"
+      th id
+      th Type
+      th Title
+      th In stock
+      th In use
+      th Ready to refill
+      th At refill
+      th
+
+    - @consumables.each do |consumable|
+     tr
+       td = consumable.id
+       td = consumable.consumable_type.title
+       td = consumable.title
+       td = consumable.quantity_in_stock
+       td = consumable.quantity_in_use
+       td = consumable.quantity_ready_to_refill
+       td = consumable.quantity_at_refill
+       td #{link_to '', consumable_path(consumable), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
+          #{link_to '', edit_consumable_path(consumable), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
+          #{link_to '', consumable_path(consumable), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }
+
+
+  .modal role="dialog" tabindex="-1" data-target="refill-consumable.modal" data-backdrop="false"
+    .modal-dialog role="document"
+      .modal-content

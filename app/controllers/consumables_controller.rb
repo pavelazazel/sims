@@ -1,4 +1,6 @@
 class ConsumablesController < ApplicationController
+  protect_from_forgery except: [:get_consumables, :refill]
+
   def index
     @consumables = Consumable.order(:id)
   end
@@ -39,6 +41,43 @@ class ConsumablesController < ApplicationController
     redirect_to consumables_path
   end
 
+  def get_types
+    types = ConsumableType.all.order(:id)
+    respond_to do |format|
+      format.json { render json: types }
+    end
+  end
+
+  def get_consumables
+    consumables = Consumable.where(consumable_type_id: params[:type_id])
+    respond_to do |format|
+      format.json { render json: consumables }
+    end
+  end
+
+  def refill
+    is_saved = false
+    params[:counters].each do |counter|
+      consumable = Consumable.find(counter[:id])
+      case params[:act]
+      when 'send'
+        ready = consumable.quantity_ready_to_refill - counter[:count]
+        already = consumable.quantity_at_refill + counter[:count]
+        is_saved = consumable.update(quantity_ready_to_refill: ready,
+                                     quantity_at_refill: already)
+      when 'get'
+        already = consumable.quantity_at_refill - counter[:count]
+        stock = consumable.quantity_in_stock + counter[:count]
+        is_saved = consumable.update(quantity_at_refill: already,
+                                     quantity_in_stock: stock)
+      else
+        raise ArgumentError, 'Art is not a "send" or "get"'
+      end
+    end
+    respond_to do |format|
+      format.json { render json: is_saved }
+    end
+  end
 
   private
 
