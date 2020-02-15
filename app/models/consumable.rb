@@ -11,6 +11,7 @@
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  consumable_type_id       :bigint           not null
+#  placement                :string
 #
 
 class Consumable < ApplicationRecord

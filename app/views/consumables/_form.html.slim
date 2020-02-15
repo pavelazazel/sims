@@ -33,4 +33,8 @@
         =form.label :quantity_at_refill, class: 'ml-2 text-light col-2'
         =form.number_field :quantity_at_refill, min: 0, class: 'bg-secondary custom-input text-light'
     p
+      .form-row
+        =form.label :placement, class: 'ml-2 text-light col-2'
+        =form.text_field :placement, class: 'bg-secondary text-light custom-input'
+    p
       =form.submit class: 'btn btn-outline-success'

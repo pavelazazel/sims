@@ -88,6 +88,7 @@ class ConsumablesController < ApplicationController
                                        :quantity_in_use,
                                        :quantity_ready_to_refill,
                                        :quantity_at_refill,
-                                       :consumable_type_id)
+                                       :consumable_type_id,
+                                       :placement)
   end
 end

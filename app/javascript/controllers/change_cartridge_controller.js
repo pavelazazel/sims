@@ -38,9 +38,10 @@ export default class extends Controller {
     var location_found = false;
     var sub_room = 0;
     for (var i = 0; i < window.locations.length; i++) {
-      if (room.toString() == window.locations[i].room.substring(0, room.toString().length)) {
+      if (room.toString() == window.locations[i].room.substring(0, room.toString().length) &&
+          department == window.locations[i].department) {
         sub_room++;
-        if (department == window.locations[i].department && room == window.locations[i].room) {
+        if (room == window.locations[i].room) {
           location_found = true;
         }
       }
@@ -51,20 +52,22 @@ export default class extends Controller {
   }
 
   get_devices(department, room) {
-    var type_id = 1;             // SET THIS VARIABLE ACCORDING TO YOUR DEVICE TYPE_ID IN TABLE OF TYPES
-    var request = this.create_request('POST', 'get_devices', false);
+    var type_ids = [3, 8];       // SET THIS ARRAY ACCORDING TO YOUR DEVICE TYPE_IDS IN TABLE OF TYPES
     var devices = [];
-    request.onload = function() {
-      devices = JSON.parse(request.response);
-    };
-    request.send('type_id=' + type_id + '&department=' + department + '&room=' + room);
+    for (var i = 0; i < type_ids.length; i++) {
+      var request = this.create_request('POST', 'get_devices', false);
+      request.onload = function() {
+        devices = devices.concat(JSON.parse(request.response));
+      };
+      request.send('type_id=' + type_ids[i] + '&department=' + department + '&room=' + room);
+    }
     if (devices.length == 1) {
       this.move(devices[0]);
     } else if (devices.length > 1) {
       this.which_device(devices);
     } else {
       this.clearInput();
-      alert('В кабинете №' + room +' не найдено принтеров. Проверьте ввод или обратитесь к администратору.');
+      alert('В кабинете №' + room +' не найдено печатающих устройств. Проверьте ввод или обратитесь к администратору.');
       document.location.reload(true);
     }
   }
@@ -81,13 +84,13 @@ export default class extends Controller {
     this.inputTarget.style.display = 'none';
     if (cartridge.title) {
       this.instructionTarget.textContent = 'Ваш картридж ' + cartridge.title;
-      this.infoTarget.textContent = 'Возьмите его из соответствующей коробки. Использованный картридж положите в коробку "На заправку"';
+      this.infoTarget.textContent = 'Возьмите его из коробки ' + cartridge.placement
+                                  + '. Использованный картридж положите в коробку "На заправку"';
       this.cancelTarget.style.display = 'block';
       this.start_timer(10);
       var abort_request = this.create_request('POST', 'abort', true);
       window.addEventListener('keydown', function(event){
         if (event.key == 'Delete') {
-          console.log(cartridge.movement_id);
           abort_request.send('movement_id=' + cartridge.movement_id);
           alert('Смена картриджа отменена!');
           document.location.reload(true);
@@ -95,7 +98,8 @@ export default class extends Controller {
       }, true);
     } else {
       this.instructionTarget.textContent = 'Ошибка! Картридж не найден';
-      this.infoTarget.textContent = 'Обратитесь к сетевому администратору или попробуйте снова. Страница будет перезагружена';
+      this.infoTarget.textContent = 'Возможно, подходящие картриджи закончились. '
+                                  + 'Обратитесь к системному администратору или попробуйте снова. Страница будет перезагружена';
       setTimeout(function(){
         document.location.reload(true);
       }, 5000);
@@ -105,7 +109,6 @@ export default class extends Controller {
   which_device(devices) {
     this.instructionTarget.textContent = 'Введите порядковый номер принтера, которому требуется замена картриджа';
     var devices_str = '<div class="container"> <div class="row">';
-    console.log(devices);
     devices.forEach(function(device, i, devices) {
       devices_str += '<div class="col"><p><h1>' + (i + 1) + '</h1></p>'
                   + '<p><img src=' + device[3] + '></p>'

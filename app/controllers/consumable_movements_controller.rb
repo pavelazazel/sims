@@ -70,10 +70,16 @@ class ConsumableMovementsController < ApplicationController
       @consumable_movement.attributes = { consumable_id: consumable.id, location_id: params[:location_id] }
     end
     if @consumable_movement.save
-      consumable = '{ "title": "' + @consumable_movement.consumable.title + '", "movement_id": "' + @consumable_movement.id.to_s + '" }'
+      consumable = '{ "title": "' + @consumable_movement.consumable.title +
+                   '", "movement_id": "' + @consumable_movement.id.to_s +
+                   '", "placement": "' + @consumable_movement.consumable.placement + '" }'
       c = Consumable.find(@consumable_movement.consumable.id)
-      c.increment!(:quantity_ready_to_refill)
-      c.decrement!(:quantity_in_stock)
+      if c.quantity_in_stock > 0
+        c.increment!(:quantity_ready_to_refill)
+        c.decrement!(:quantity_in_stock)
+      else
+        consumable = '{ "title": null }'
+      end
     else
       consumable = '{ "title": "" }'
     end

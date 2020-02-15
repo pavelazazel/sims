@@ -16,6 +16,7 @@ div data-controller='refill-consumable'
       th In use
       th Ready to refill
       th At refill
+      th Placement
       th
 
     - @consumables.each do |consumable|
@@ -27,6 +28,7 @@ div data-controller='refill-consumable'
        td = consumable.quantity_in_use
        td = consumable.quantity_ready_to_refill
        td = consumable.quantity_at_refill
+       td = consumable.placement
        td #{link_to '', consumable_path(consumable), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
           #{link_to '', edit_consumable_path(consumable), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
           #{link_to '', consumable_path(consumable), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }
