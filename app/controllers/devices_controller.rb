@@ -10,11 +10,11 @@ class DevicesController < ApplicationController
     @consumables = Consumable.all
     @consumable_types = ConsumableType.all
     @consumable_movements = ConsumableMovement.all
-    @will_paginate = true
+    @departments = Location::DEPARTMENTS
 
     @q = Device.order(:id).ransack(params_for_ransack(params.dup))
-    # for disable paginate if name or location filter set
-    @devices = @will_paginate ? @q.result.page(params[:page]) : @q.result
+    @devices_result = set_department(cookies[:department])
+    @devices = @devices_result.page(params[:page])
 
     # Excel export
     respond_to do |format|
@@ -135,5 +135,17 @@ class DevicesController < ApplicationController
       ransack_params[:q][:groupings] << { search_field => word }
     end
     ransack_params
+  end
+
+  def set_department(department)
+    unless department.blank?
+      result = []
+      @q.result.each do |device|
+        result << device if device.location.department == department
+      end
+      @q.result.where(id: result.map(&:id))
+    else
+      @q.result
+    end
   end
 end

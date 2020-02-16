@@ -75,8 +75,19 @@ div data-controller='move-device'
       .modal-content
 
 .d-flex
-  .p-1.flex-grow-1.mr-auto = will_paginate @devices if @will_paginate
+  .p-1.flex-grow-1.mr-auto = will_paginate @devices
+  .p-1.text-right.mr-3
+    .btn-group.btn-group-toggle data-toggle="buttons"
+      label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:department].blank?}" style='width: 80px'
+        = radio_button '', '', false,
+          { onchange: "document.cookie = 'department = '; document.location.reload(true);" }
+        | All
+      - @departments.each do |department|
+        label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:department] == department}" style='width: 80px'
+          = radio_button '', '', false,
+            { onchange: "document.cookie = 'department = #{department}'; document.location.reload(true);" }
+          = department.capitalize
   .p-1.text-right.mr-2.text-monospace
     button.btn.btn-sm.btn-secondary.disabled
       | Found
-      span.badge.badge-light.ml-2 #{@q.result.size}
+      span.badge.badge-light.ml-2 = @devices_result.size
