@@ -80,12 +80,12 @@ div data-controller='move-device'
     .btn-group.btn-group-toggle data-toggle="buttons"
       label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:department].blank?}" style='width: 80px'
         = radio_button '', '', false,
-          { onchange: "document.cookie = 'department = '; document.location.reload(true);" }
+          { onclick: "document.cookie = 'department = '; document.location = '#{ root_path }';" }
         | All
       - @departments.each do |department|
         label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:department] == department}" style='width: 80px'
           = radio_button '', '', false,
-            { onchange: "document.cookie = 'department = #{department}'; document.location.reload(true);" }
+            { onclick: "document.cookie = 'department = #{department}'; document.location = '#{ root_path }';" }
           = department.capitalize
   .p-1.text-right.mr-2.text-monospace
     button.btn.btn-sm.btn-secondary.disabled
