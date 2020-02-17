@@ -77,17 +77,27 @@ div data-controller='move-device'
 .d-flex
   .p-1.flex-grow-1.mr-auto = will_paginate @devices
   .p-1.text-right.mr-3
-    .btn-group.btn-group-toggle data-toggle="buttons"
-      label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:department].blank?}" style='width: 80px'
-        = radio_button '', '', false,
-          { onclick: "document.cookie = 'department = '; document.location.reload(true);" }
-        | All
-      - @departments.each do |department|
-        label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:department] == department}" style='width: 80px'
-          = radio_button '', '', false,
-            { onclick: "document.cookie = 'department = #{department}'; document.location.reload(true);" }
-          = department.capitalize
-  .p-1.text-right.mr-2.text-monospace
-    button.btn.btn-sm.btn-secondary.disabled
+    .d-flex
+      .p-1.text-right
+        .btn-group.btn-group-toggle data-toggle="buttons"
+          label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:department].blank?}" style='width: 80px'
+            = radio_button '', '', false,
+              { onclick: "document.cookie = 'department = '; document.location.reload(true);" }
+            | All
+          - @departments.each do |department|
+            label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:department] == department}" style='width: 80px'
+              = radio_button '', '', false,
+                { onclick: "document.cookie = 'department = #{department}'; document.location.reload(true);" }
+              = department.capitalize
+    .d-flex
+      .p-1.text-right
+        .btn-group.btn-group-toggle data-toggle="buttons"
+          - [15, 30, 50, 100].each do |per_page|
+            label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:per_page].to_s == per_page.to_s}" style='width: 80px'
+              = radio_button '', '', false,
+                { onclick: "document.cookie = 'per_page = #{per_page}'; document.location.reload(true);" }
+              = per_page
+  .p-1.text-right.mr-2.mt-1.text-monospace
+    button.btn.btn-sm.btn-secondary.disabled id="btnFound" onclick="document.cookie = 'per_page = #{@devices_result.size}'; document.location.reload(true);" title="Tap if you want to see all found devices. It may be a little longer"
       | Found
       span.badge.badge-light.ml-2 = @devices_result.size

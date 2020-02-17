@@ -14,7 +14,9 @@ class DevicesController < ApplicationController
 
     @q = Device.order(:id).ransack(params_for_ransack(params.dup))
     @devices_result = set_department(cookies[:department])
-    @devices = @devices_result.page(params[:page])
+    cookies[:per_page] = Device.per_page if cookies[:per_page].blank?
+    @devices = @devices_result.paginate(page: params[:page],
+                                        per_page: cookies[:per_page])
 
     # Excel export
     respond_to do |format|
