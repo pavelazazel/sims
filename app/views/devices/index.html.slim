@@ -40,7 +40,7 @@ div data-controller='move-device'
       th = sort_link(@q, :id, hide_indicator: true) do
         strong.text-light ID
       end
-      th = sort_link(@q, :name, hide_indicator: true) do
+      th = sort_link(@q, :name, ['name_type_title', 'name_brand_title', 'name_model'], hide_indicator: true) do
         strong.text-light Device name
       end
       th = sort_link(@q, :inventory_number, hide_indicator: true) do
@@ -49,7 +49,7 @@ div data-controller='move-device'
       th = sort_link(@q, :serial_number, hide_indicator: true) do
         strong.text-light Serial №
       end
-      th = sort_link(@q, :location, hide_indicator: true) do
+      th = sort_link(@q, :location, ['location_department', 'location_room'], hide_indicator: true) do
         strong.text-light Location
       end
       th = sort_link(@q, :comment, hide_indicator: true) do
@@ -60,10 +60,10 @@ div data-controller='move-device'
     - @devices.each do |device|
       tr
         td = device.id
-        td #{device.name.type.title} #{device.name.brand.title} #{device.name.model}
+        td = device.name.full_name
         td = device.inventory_number
         td = device.serial_number
-        td #{device.location.department} #{device.location.room}
+        td = device.location.full_location
         td = device.comment
         td #{link_to '', device_path(device), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
           #{link_to '', edit_device_path(device), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
