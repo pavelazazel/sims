@@ -2,9 +2,9 @@ h3 class="text-light ml-2" Move Consumable
 = form_with model: @consumable_movement, html: { autocomplete: 'off' }, local: true do |form|
   - if @consumable_movement.errors.any?
       div id="error_explanation"
-        h2.text-danger #{pluralize(@consumable_movement.errors.count, "error")} prohibited this brand from being saved:
+        h2.text-danger.ml-3 #{pluralize(@consumable_movement.errors.count, "error")} prohibited this brand from being saved:
         - @consumable_movement.errors.full_messages.each do |msg|
-          li.text-danger
+          li.text-danger.ml-3
             = msg
 
   / TODO: fix: when errors appear, the structure below collapses

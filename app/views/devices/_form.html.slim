@@ -1,9 +1,9 @@
 = form_with model: @device, html: { autocomplete: 'off' }, local: true do |form|
   - if @device.errors.any?
       div id="error_explanation"
-        h2.text-danger #{pluralize(@device.errors.count, 'error')} prohibited this device from being saved:
+        h2.text-danger.ml-3 #{pluralize(@device.errors.count, 'error')} prohibited this device from being saved:
         - @device.errors.full_messages.each do |msg|
-          li.text-danger
+          li.text-danger.ml-3
             =msg
 
   / TODO: fix: when errors appear, the structure below collapses
