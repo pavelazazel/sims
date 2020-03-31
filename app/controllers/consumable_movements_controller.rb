@@ -11,6 +11,8 @@ class ConsumableMovementsController < ApplicationController
 
   def create
     @consumable_movement = ConsumableMovement.new(consumable_movement_params)
+    @consumable_movement.consumable.increment!(:quantity_ready_to_refill)
+    @consumable_movement.consumable.decrement!(:quantity_in_stock)
     if @consumable_movement.save
       redirect_to consumable_movements_path
     else
@@ -73,10 +75,9 @@ class ConsumableMovementsController < ApplicationController
       consumable = '{ "title": "' + @consumable_movement.consumable.title +
                    '", "movement_id": "' + @consumable_movement.id.to_s +
                    '", "placement": "' + @consumable_movement.consumable.placement + '" }'
-      c = Consumable.find(@consumable_movement.consumable.id)
-      if c.quantity_in_stock > 0
-        c.increment!(:quantity_ready_to_refill)
-        c.decrement!(:quantity_in_stock)
+      if @consumable_movement.consumable.quantity_in_stock > 0
+        @consumable_movement.consumable.increment!(:quantity_ready_to_refill)
+        @consumable_movement.consumable.decrement!(:quantity_in_stock)
       else
         consumable = '{ "title": null }'
       end
@@ -90,9 +91,8 @@ class ConsumableMovementsController < ApplicationController
 
   def abort
     @consumable_movement = ConsumableMovement.find(params[:movement_id])
-    c = Consumable.find(@consumable_movement.consumable.id)
-    c.decrement!(:quantity_ready_to_refill)
-    c.increment!(:quantity_in_stock)
+    @consumable_movement.consumable.decrement!(:quantity_ready_to_refill)
+    @consumable_movement.consumable.increment!(:quantity_in_stock)
     @consumable_movement.destroy
   end
 
