@@ -6,5 +6,8 @@
       p class='ml-2 text-light col-5' #{Device.human_attribute_name :serial_number}: #{@device.serial_number}
       p class='ml-2 text-light col-5' #{Device.human_attribute_name :location}: #{@device.location.full_location}
       p class='ml-2 text-light col-5' #{Device.human_attribute_name :comment}: #{@device.comment}
+      p class='ml-2 text-light col-5' #{Device.human_attribute_name :consumables}:
+      - @device.name.consumable.ids.each do |id|
+        p class='ml-5 text-light col-5' ➤ #{Consumable.find(id).consumable_type.title} #{Consumable.find(id).title}
     .col
       =image_tag @device.name.image.variant(resize: "350x350") if @device.name.image.attached?
