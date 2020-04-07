@@ -1,0 +1,23 @@
+p
+= link_to new_user_path, class: 'ml-3 btn btn-sm btn-outline-success'
+  = icon 'fas', 'plus'
+p
+
+table.px-2.table.table-dark.table-sm.table-striped.table-bordered.table-hover.table-responsive
+  tr.bg-secondary
+    th id
+    th Username
+    th
+    th
+
+  - @users.each do |user|
+   tr
+     td.align-middle = user.id
+     td.align-middle = user.username
+     td.align-middle = image_tag user.image,
+                                   size: 50,
+                                   style: 'border-radius: 30px;' if user.image.attached?
+     td.align-middle = link_to '', user_path(user),
+                                   class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash',
+                                   method: :delete,
+                                   data: { confirm: 'Are you sure?' }

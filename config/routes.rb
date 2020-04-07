@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { registrations: 'users' }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   get  'devices/get_departments'
   get  'devices/get_locations'
@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   resources :types, except: [:show]
   resources :brands, except: [:show]
   resources :locations, except: [:show]
+  resources :users, except: [:show]
   resources :consumables
 
   resources :devices_imports, only: [:new, :create]
