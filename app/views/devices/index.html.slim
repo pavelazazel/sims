@@ -1,77 +1,87 @@
 css:
   input::-webkit-input-placeholder {
-  color: #adb5bd !important;
+    color: #adb5bd !important;
   }
-.d-flex
-  .p-1.flex-grow-1.mr-auto
-    = link_to new_device_path, class: 'btn btn-sm btn-outline-success ml-2'
-      = icon 'fas', 'plus'
-  .p-1.text-right
-    = search_form_for @q, html: { autocomplete: 'off' } do |f|
-      = f.search_field :id_eq,
-                       placeholder: 'ID',
-                       class: 'form-control-sm bg-secondary text-light col-sm-1'
-      = f.search_field :name_cont,
-                       value: params.dig(:q, :name_cont),
-                       placeholder: 'Device name',
-                       class: 'form-control-sm bg-secondary text-light ml-1'
-      = f.search_field :inventory_number_cont,
-                       placeholder: 'Inventory №',
-                       class: 'form-control-sm bg-secondary text-light ml-1'
-      = f.search_field :serial_number_cont,
-                       placeholder: 'Serial №',
-                       class: 'form-control-sm bg-secondary text-light ml-1'
-      = f.search_field :location_cont,
-                       value: params.dig(:q, :location_cont),
-                       placeholder: 'Location',
-                       class: 'form-control-sm bg-secondary text-light ml-1'
-      = f.search_field :comment_cont,
-                       placeholder: 'Comment',
-                       class: 'form-control-sm bg-secondary text-light ml-1'
-      = button_tag class: 'btn btn-sm btn-outline-info ml-1'
-        = icon 'fas', 'search'
-      = link_to devices_path, class: 'btn btn-sm btn-outline-danger ml-1 mr-2'
-        = icon 'fas', 'window-close'
 
-p
 div data-controller='move-device'
-  table class="table table-dark table-sm table-striped table-bordered table-hover"
-    tr class="bg-secondary"
-      th = sort_link(@q, :id, hide_indicator: true) do
-        strong.text-light ID
-      end
-      th = sort_link(@q, :name, ['name_type_title', 'name_brand_title', 'name_model'], hide_indicator: true) do
-        strong.text-light Device name
-      end
-      th = sort_link(@q, :inventory_number, hide_indicator: true) do
-        strong.text-light Inventory №
-      end
-      th = sort_link(@q, :serial_number, hide_indicator: true) do
-        strong.text-light Serial №
-      end
-      th = sort_link(@q, :location, ['location_department', 'location_room'], hide_indicator: true) do
-        strong.text-light Location
-      end
-      th = sort_link(@q, :comment, hide_indicator: true) do
-        strong.text-light Comment
-      end
-      th
+  = search_form_for @q, html: { autocomplete: 'off' } do |f|
+    table.table.table-dark.table-sm.table-striped.table-bordered.table-hover
+        tr.bg-secondary.d-flex
+            th.col-1.d-flex
+              .p-1
+                = link_to new_device_path, class: 'btn btn-sm btn-success'
+                  = icon 'fas', 'plus'
+              .p-1.flex-fill
+                = f.search_field :id_eq,
+                                placeholder: 'ID',
+                                class: 'bg-secondary text-light form-control form-control-sm'
+              .p-1
+                = sort_link(@q, :id_eq, hide_indicator: true) do
+                  h4.text-light ↕
+            th.col-3.d-flex
+              .p-1.flex-fill
+                = f.search_field :name_cont,
+                                value: params.dig(:q, :name_cont),
+                                placeholder: 'Device name',
+                                class: 'bg-secondary text-light form-control form-control-sm'
+              .p-1
+                = sort_link(@q, :name, ['name_type_title', 'name_brand_title', 'name_model'], hide_indicator: true) do
+                  h4.text-light ↕
+            th.col-2.d-flex
+              .p-1.flex-fill
+                = f.search_field :inventory_number_cont,
+                                placeholder: 'Inventory №',
+                                class: 'bg-secondary text-light form-control form-control-sm'
+              .p-1
+                = sort_link(@q, :inventory_number, hide_indicator: true) do
+                  h4.text-light ↕
+            th.col-2.d-flex
+              .p-1.flex-fill
+                = f.search_field :serial_number_cont,
+                                placeholder: 'Serial №',
+                                class: 'bg-secondary text-light form-control form-control-sm'
+              .p-1
+                = sort_link(@q, :serial_number, hide_indicator: true) do
+                  h4.text-light ↕
+            th.col-1.d-flex
+              .p-1.flex-fill
+                = f.search_field :location_cont,
+                                value: params.dig(:q, :location_cont),
+                                placeholder: 'Location',
+                                class: 'bg-secondary text-light form-control form-control-sm'
+              .p-1
+                = sort_link(@q, :location, ['location_department', 'location_room'], hide_indicator: true) do
+                  h4.text-light ↕
+            th.col-2.d-flex
+              .p-1.flex-fill
+                = f.search_field :comment_cont,
+                                placeholder: 'Comment',
+                                class: 'bg-secondary text-light form-control form-control-sm'
+              .p-1
+                = sort_link(@q, :comment, hide_indicator: true) do
+                  h4.text-light ↕
+            th.col-1.d-flex
+              .p-1
+                = button_tag class: 'btn btn-sm btn-info ml-1'
+                  = icon 'fas', 'search'
+              .p-1
+                = link_to devices_path, class: 'btn btn-sm btn-danger ml-1'
+                  = icon 'fas', 'window-close'
+        - @devices.each do |device|
+          tr.d-flex
+            td.col-1 = device.id
+            td.col-3 = device.name.full_name
+            td.col-2 = device.inventory_number
+            td.col-2 = device.serial_number
+            td.col-1 = device.location.full_location
+            td.col-2 = device.comment
+            td.col-1 #{link_to '', device_path(device), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
+              #{link_to '', edit_device_path(device), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
+              #{link_to '', device_path(device), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }
+              #{link_to '', 'javascript:;', id: device.id, 'data-action': 'click->move-device#modal', class: 'btn btn-sm btn-outline-primary mr-1 fas fa-shipping-fast'}
 
-    - @devices.each do |device|
-      tr
-        td = device.id
-        td = device.name.full_name
-        td = device.inventory_number
-        td = device.serial_number
-        td = device.location.full_location
-        td = device.comment
-        td #{link_to '', device_path(device), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
-          #{link_to '', edit_device_path(device), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
-          #{link_to '', device_path(device), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }
-          #{link_to '', 'javascript:;', id: device.id, 'data-action': 'click->move-device#modal', class: 'btn btn-sm btn-outline-primary mr-1 fas fa-shipping-fast'}
-
-  .modal role="dialog" tabindex="-1" data-target="move-device.modal" data-backdrop="false"
-    .modal-dialog role="document"
+  .modal role='dialog' tabindex='-1' data-target='move-device.modal' data-backdrop='false'
+    .modal-dialog role='document'
       .modal-content
 
 .d-flex
@@ -79,7 +89,7 @@ div data-controller='move-device'
   .p-1.text-right.mr-3
     .d-flex
       .p-1.text-right
-        .btn-group.btn-group-toggle data-toggle="buttons"
+        .btn-group.btn-group-toggle data-toggle='buttons'
           label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:department].blank?}" style='width: 80px'
             = radio_button '', '', false,
               { onclick: "document.cookie = 'department = '; document.location.reload(true);" }
@@ -91,13 +101,13 @@ div data-controller='move-device'
               = department.capitalize
     .d-flex
       .p-1.text-right
-        .btn-group.btn-group-toggle data-toggle="buttons"
+        .btn-group.btn-group-toggle data-toggle='buttons'
           - [15, 30, 50, 100].each do |per_page|
             label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:per_page].to_s == per_page.to_s}" style='width: 80px'
               = radio_button '', '', false,
                 { onclick: "document.cookie = 'per_page = #{per_page}'; document.location.reload(true);" }
               = per_page
   .p-1.text-right.mr-2.mt-1.text-monospace
-    button.btn.btn-sm.btn-secondary.disabled id="btnFound" onclick="document.cookie = 'per_page = #{@devices_result.size}'; document.location.reload(true);" title="Tap if you want to see all found devices. It may be a little longer"
+    button.btn.btn-sm.btn-secondary.disabled id='btnFound' onclick="document.cookie = 'per_page = #{@devices_result.size}'; document.location.reload(true);" title='Tap if you want to see all found devices. It may be a little longer'
       | Found
       span.badge.badge-light.ml-2 = @devices_result.size
