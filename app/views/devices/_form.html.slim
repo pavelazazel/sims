@@ -1,32 +1,47 @@
 = form_with model: @device, html: { autocomplete: 'off' }, local: true do |form|
   - if @device.errors.any?
-      div id="error_explanation"
+      div#error_explanation
         h2.text-danger.ml-3 #{pluralize(@device.errors.count, 'error')} prohibited this device from being saved:
         - @device.errors.full_messages.each do |msg|
           li.text-danger.ml-3
-            =msg
+            = msg
 
-  / TODO: fix: when errors appear, the structure below collapses
-  .form-group.form-control-sm data-controller='choice'
-    p
-      .form-row
-        =form.label :name, class: 'ml-2 text-light col-2'
-        =form.collection_select :name_id, Name.all, :id, :full_name, { prompt: true }, { 'data-target': 'choice.select1' }
-    p
-      .form-row
-        =form.label :inventory_number, class: 'ml-2 text-light col-2'
-        =form.text_field :inventory_number, class: 'bg-secondary text-light custom-input'
-    p
-      .form-row
-        =form.label :serial_number, class: 'ml-2 text-light col-2'
-        =form.text_field :serial_number, class: 'bg-secondary text-light custom-input'
-    p
-      .form-row
-        =form.label :location, class: 'ml-2 text-light col-2'
-        =form.collection_select :location_id, Location.all, :id, :full_location, { prompt: true }, { 'data-target': 'choice.select2' }
-    p
-      .form-row
-        =form.label :comment, class: 'ml-2 text-light col-2'
-        =form.text_area :comment, class: 'text-light bg-secondary text-light custom-textarea', style: 'height: 150px; width: 345px'
-    p
-      =form.submit class: 'btn btn-outline-success'
+  .container-fluid
+    .row
+      .col-5
+        .form-group.form-control-sm data-controller='choice'
+          p
+            .form-row
+              = form.label :name, class: 'ml-2 text-light col-2'
+              = form.collection_select :name_id, Name.all, :id, :full_name, { prompt: true }, { 'data-target': 'choice.select1' }
+          p
+            .form-row
+              = form.label :inventory_number, class: 'ml-2 text-light col-2'
+              = form.text_field :inventory_number, class: 'bg-secondary text-light custom-input'
+          p
+            .form-row
+              = form.label :serial_number, class: 'ml-2 text-light col-2'
+              = form.text_field :serial_number, class: 'bg-secondary text-light custom-input'
+          p
+            .form-row
+              = form.label :location, class: 'ml-2 text-light col-2'
+              = form.collection_select :location_id, Location.all, :id, :full_location, { prompt: true }, { 'data-target': 'choice.select2' }
+          p
+            .form-row
+              = form.label :comment, class: 'ml-2 text-light col-2'
+              = form.text_area :comment, class: 'text-light bg-secondary text-light custom-textarea', style: 'height: 150px; width: 345px'
+          - if action_name == 'edit'
+            p
+              .form-row
+                .ml-2.text-light.col-1.mr-3 #{Device.human_attribute_name :consumables}:
+                ul
+                  - @device.name.consumable.ids.each do |id|
+                    li.text-light.ml-5 #{Consumable.find(id).consumable_type.title} #{Consumable.find(id).title}
+          br
+            .form-row
+              = form.submit class: 'btn btn-outline-success mr-1'
+              = link_to 'Remove Device', device_path(@device), class: 'btn btn-outline-danger ml-5',
+                                                               method: :delete,
+                                                               data: { confirm: 'Are you sure?' } if action_name == 'edit'
+      .col
+        = image_tag @device.name.image.variant(resize: '350x350') if action_name == 'edit' && @device.name.image.attached?

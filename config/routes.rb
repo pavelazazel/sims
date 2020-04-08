@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   post 'consumable_movements/move'
   post 'consumable_movements/abort'
 
-  resources :devices
+  resources :devices, except: [:show]
   resources :names
   resources :types, except: [:show]
   resources :brands, except: [:show]

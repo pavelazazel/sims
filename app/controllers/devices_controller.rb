@@ -29,10 +29,6 @@ class DevicesController < ApplicationController
     end
   end
 
-  def show
-    @device = Device.find(params[:id])
-  end
-
   def new
     @device = Device.new
   end
@@ -53,7 +49,7 @@ class DevicesController < ApplicationController
   def update
     @device = Device.find(params[:id])
     if @device.update(device_params)
-      redirect_to @device
+      redirect_to devices_path
     else
       render :edit
     end

@@ -9,7 +9,8 @@ div data-controller='move-device'
         tr.bg-secondary.d-flex
             th.col-1.d-flex
               .p-1
-                = link_to new_device_path, class: 'btn btn-sm btn-success'
+                = link_to new_device_path, class: 'btn btn-sm btn-success',
+                                           title: 'Add new device'
                   = icon 'fas', 'plus'
               .p-1.flex-fill
                 = f.search_field :id_eq,
@@ -43,7 +44,7 @@ div data-controller='move-device'
               .p-1
                 = sort_link(@q, :serial_number, hide_indicator: true) do
                   h4.text-light ↕
-            th.col-1.d-flex
+            th.col-2.d-flex
               .p-1.flex-fill
                 = f.search_field :location_cont,
                                 value: params.dig(:q, :location_cont),
@@ -60,25 +61,26 @@ div data-controller='move-device'
               .p-1
                 = sort_link(@q, :comment, hide_indicator: true) do
                   h4.text-light ↕
-            th.col-1.d-flex
               .p-1
-                = button_tag class: 'btn btn-sm btn-info ml-1'
+                = button_tag class: 'btn btn-sm btn-info ml-1',
+                             title: 'Search'
                   = icon 'fas', 'search'
               .p-1
-                = link_to devices_path, class: 'btn btn-sm btn-danger ml-1'
+                = link_to devices_path, class: 'btn btn-sm btn-danger ml-1',
+                                        title: 'Clear filter'
                   = icon 'fas', 'window-close'
         - @devices.each do |device|
-          tr.d-flex
+          tr.d-flex[id="#{device.id}"
+                    data-action='contextmenu->move-device#modal'
+                    oncontextmenu='javascript:;return false;'
+                    ondblclick="window.location.href = '#{edit_device_path(device)}'"
+                    title='Double click to open device. Right click to quickly move']
             td.col-1 = device.id
             td.col-3 = device.name.full_name
             td.col-2 = device.inventory_number
             td.col-2 = device.serial_number
-            td.col-1 = device.location.full_location
+            td.col-2 = device.location.full_location
             td.col-2 = device.comment
-            td.col-1 #{link_to '', device_path(device), class: 'btn btn-sm btn-outline-info mr-1 fas fa-eye'}
-              #{link_to '', edit_device_path(device), class: 'btn btn-sm btn-outline-warning mr-1 fas fa-pencil-alt' }
-              #{link_to '', device_path(device), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }
-              #{link_to '', 'javascript:;', id: device.id, 'data-action': 'click->move-device#modal', class: 'btn btn-sm btn-outline-primary mr-1 fas fa-shipping-fast'}
 
   .modal role='dialog' tabindex='-1' data-target='move-device.modal' data-backdrop='false'
     .modal-dialog role='document'
@@ -108,6 +110,7 @@ div data-controller='move-device'
                 { onclick: "document.cookie = 'per_page = #{per_page}'; document.location.reload(true);" }
               = per_page
   .p-1.text-right.mr-2.mt-1.text-monospace
-    button.btn.btn-sm.btn-secondary.disabled id='btnFound' onclick="document.cookie = 'per_page = #{@devices_result.size}'; document.location.reload(true);" title='Tap if you want to see all found devices. It may be a little longer'
+    button.btn.btn-sm.btn-secondary.disabled#btnFound[onclick="document.cookie = 'per_page = #{@devices_result.size}'; document.location.reload(true);"
+                                                      title='Tap if you want to see all found devices. It may be a little longer']
       | Found
       span.badge.badge-light.ml-2 = @devices_result.size
