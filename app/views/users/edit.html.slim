@@ -13,7 +13,7 @@ h3 class="text-light ml-2" Edit User
     .form-group.form-control-sm
       p
         .form-row.ml-5
-          = image_tag @user.image, size: 350, style: 'border-radius: 200px;' if @user.image.attached?
+          = image_tag @user.image, class: 'img-border', size: 340, style: 'border-radius: 200px;' if @user.image.attached?
       p
         .form-row
           = form.label :username, class: 'ml-2 text-light col-1'
@@ -28,3 +28,10 @@ h3 class="text-light ml-2" Edit User
           = form.file_field :image, class: 'text-light'
       p
         = form.submit class: "btn btn-outline-success"
+
+      p.text-light.mt-4
+        - unless @history.blank?
+          | Last events:
+          - @history.each do |h|
+            li.text-light
+              = h

@@ -6,7 +6,6 @@
           li.text-danger.ml-3
             = msg
 
-  / TODO: fix: when errors appear, the structure below collapses
   .form-group.form-control-sm data-controller='choice'
     p
       .form-row
@@ -18,3 +17,5 @@
         = form.text_field :room, class: 'bg-secondary text-light custom-input'
     p
       = form.submit class: 'btn btn-outline-success'
+
+    = render partial: 'layouts/history'

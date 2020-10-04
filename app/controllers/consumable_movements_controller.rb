@@ -1,5 +1,5 @@
 class ConsumableMovementsController < ApplicationController
-  protect_from_forgery except: :move
+  protect_from_forgery except: [:move, :abort]
 
   def index
     @consumable_movements = ConsumableMovement.order(id: :desc).page(params[:page])
@@ -14,6 +14,7 @@ class ConsumableMovementsController < ApplicationController
     @consumable_movement.consumable.increment!(:quantity_ready_to_refill)
     @consumable_movement.consumable.decrement!(:quantity_in_stock)
     if @consumable_movement.save
+      record_activity new_obj: @consumable_movement
       redirect_to consumable_movements_path
     else
       render :new
@@ -23,6 +24,7 @@ class ConsumableMovementsController < ApplicationController
   def destroy
     @consumable_movement = ConsumableMovement.find(params[:id])
     @consumable_movement.destroy
+    record_activity old_obj: @consumable_movement
     redirect_to consumable_movements_path
   end
 
@@ -81,6 +83,9 @@ class ConsumableMovementsController < ApplicationController
       else
         consumable = '{ "title": null }'
       end
+      record_activity new_obj: @consumable_movement,
+                      action: 'create',
+                      info: record_activity_info
     else
       consumable = '{ "title": "" }'
     end
@@ -94,6 +99,9 @@ class ConsumableMovementsController < ApplicationController
     @consumable_movement.consumable.decrement!(:quantity_ready_to_refill)
     @consumable_movement.consumable.increment!(:quantity_in_stock)
     @consumable_movement.destroy
+    record_activity old_obj: @consumable_movement,
+                    action: 'destroy',
+                    info: record_activity_info
   end
 
   private
@@ -101,4 +109,11 @@ class ConsumableMovementsController < ApplicationController
   def consumable_movement_params
     params.require(:consumable_movement).permit(:consumable_id, :location_id)
   end
+
+  def record_activity_info
+    info = @consumable_movement.consumable.consumable_type.title + ' ' +
+           @consumable_movement.consumable.title + ' moved to ' +
+           @consumable_movement.location.history_title
+  end
+
 end

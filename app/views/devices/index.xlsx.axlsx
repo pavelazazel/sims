@@ -9,6 +9,7 @@ wb.styles do |style|
     sheet.add_row ['Inventory Devices'], style: project_heading
     # Add the date this was downloaded
     sheet.add_row ['Downloaded at', Time.now.strftime('%b %-d %Y ; %H:%M')]
+    sheet.add_row ['by user:', current_user.username]
   end
 
   wb.add_worksheet(name: 'Devices') do |sheet|
@@ -48,9 +49,9 @@ wb.styles do |style|
   end
 
   wb.add_worksheet(name: 'Consumables') do |sheet|
-    sheet.add_row %w[id title quantity_in_stock quantity_in_use quantity_ready_to_refill quantity_at_refill consumable_type_id], style: heading
+    sheet.add_row %w[id title quantity_in_stock quantity_in_use quantity_ready_to_refill quantity_at_refill consumable_type_id placement], style: heading
     @consumables.each do |consumable|
-      sheet.add_row [consumable.id, consumable.title, consumable.quantity_in_stock, consumable.quantity_in_use, consumable.quantity_ready_to_refill, consumable.quantity_at_refill, consumable.consumable_type_id]
+      sheet.add_row [consumable.id, consumable.title, consumable.quantity_in_stock, consumable.quantity_in_use, consumable.quantity_ready_to_refill, consumable.quantity_at_refill, consumable.consumable_type_id, consumable.placement]
     end
   end
 
@@ -76,4 +77,12 @@ wb.styles do |style|
       sheet.add_row [consumable_movement.id, consumable_movement.consumable_id, consumable_movement.location_id]
     end
   end
+
+  wb.add_worksheet(name: 'UserActivities') do |sheet|
+    sheet.add_row %w[id user_id action object_type object_id info], style: heading
+    @user_activities.each do |user_activity|
+      sheet.add_row [user_activity.id, user_activity.user_id, user_activity.action, user_activity.object_type, user_activity.object_id, user_activity.info]
+    end
+  end
+
 end

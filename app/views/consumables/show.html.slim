@@ -1,9 +1,11 @@
-p class='ml-2 text-light col-5' #{Consumable.human_attribute_name :title}: #{@consumable.title}
-p class='ml-2 text-light col-5' #{Consumable.human_attribute_name :device_names}:
+p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :title}: #{@consumable.title}
+p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :device_names}:
 - @consumable.name.ids.each do |id|
-  p class='ml-5 text-light col-5' ➤ #{Name.find(id).full_name}
-p class='ml-2 text-light col-5' #{Consumable.human_attribute_name :quantity_in_stock}: #{@consumable.quantity_in_stock}
-p class='ml-2 text-light col-5' #{Consumable.human_attribute_name :quantity_in_use}: #{@consumable.quantity_in_use}
-p class='ml-2 text-light col-5' #{Consumable.human_attribute_name :quantity_ready_to_refill}: #{@consumable.quantity_ready_to_refill}
-p class='ml-2 text-light col-5' #{Consumable.human_attribute_name :quantity_at_refill}: #{@consumable.quantity_at_refill}
-p class='ml-2 text-light col-5' #{Consumable.human_attribute_name :placement}: #{@consumable.placement}
+  p.ml-5.text-light.col-5 ➤ #{Name.find(id).full_name}
+p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :quantity_in_stock}: #{@consumable.quantity_in_stock}
+p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :quantity_in_use}: #{@consumable.quantity_in_use}
+p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :quantity_ready_to_refill}: #{@consumable.quantity_ready_to_refill}
+p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :quantity_at_refill}: #{@consumable.quantity_at_refill}
+p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :placement}: #{@consumable.placement}
+.ml-2.col-5
+  = render partial: 'layouts/history'

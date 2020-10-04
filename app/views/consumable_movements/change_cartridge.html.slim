@@ -3,12 +3,24 @@ div data-controller='change-cartridge'
   div align="center"
     .jumbotron style="width: 1000px;"
       h1.display-4 Смена картриджа
-      p.lead data-target="change-cartridge.instruction" Введите номер Вашего кабинета
-      p.text-info data-target="change-cartridge.info" Если кабинет находится в филиале, перед номером кабинета введите дробь(/) для Орбели или звёздочку(*) для Просвещения
+      p.lead data-target="change-cartridge.instruction"
+        | Введите номер Вашего кабинета
+      .text-info data-target="change-cartridge.info"
+        p Если у кабинета нет номера - введите плюс(+)
+        p Если кабинет в филиале - перед номером кабинета введите дробь(/)
+          для Орбели или звёздочку(*) для Просвещения
       hr.my-4
       p.lead
-        = text_field_tag :input, nil, class: 'col-3 bg-white', autofocus: true, style: 'text-align:center', 'data-target': 'change-cartridge.input', 'data-action': 'input->change-cartridge#changeInput keydown->change-cartridge#isEnter'
+        = text_field_tag :input,
+                         nil,
+                         class: 'col-3 bg-white',
+                         autofocus: true,
+                         autocomplete: 'off',
+                         style: 'text-align:center',
+                         'data-target': 'change-cartridge.input',
+                         'data-action': 'input->change-cartridge#changeInput keydown->change-cartridge#isKeyDown'
+        p.text-black-50 data-target="change-cartridge.timerReload"
         div data-target="change-cartridge.cancel" style="display: none"
           .d-flex.align-items-center
             .spinner-grow.text-danger role="status" style="width: 3rem; height: 3rem;"
-            h4.text-danger.ml-3 data-target="change-cartridge.timer"
+            h4.text-danger.ml-3 data-target="change-cartridge.timerAbort"

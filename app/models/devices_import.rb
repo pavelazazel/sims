@@ -2,10 +2,15 @@ class DevicesImport
   include ActiveModel::Model
   require 'roo'
 
-  attr_accessor :file
+  attr_accessor :file, :id
 
   def initialize(attributes = {})
+    @id = ''
     attributes.each { |name, value| send("#{name}=", value) }
+  end
+
+  def attributes
+    [['filename', file.original_filename]]
   end
 
   # This method tells rails that this object has no related table in our database.
@@ -24,7 +29,7 @@ class DevicesImport
 
   def load_imported_data(model)
     spreadsheet = open_spreadsheet # load from file
-    header = spreadsheet.sheet("#{model}s").row(1) # first row - names of attributes
+    header = spreadsheet.sheet("#{model.to_s.pluralize}").row(1) # first row - names of attributes
 
     # from second row starting load data row by row
     (2..spreadsheet.last_row).map do |i|
@@ -58,14 +63,14 @@ class DevicesImport
   end
 
   def save
-    models = [Type, Brand, Location, Name, Device, Consumable, ConsumableType, ConsumableMovement]  # all models to array
+    models = [Type, Brand, Location, Name, Device, Consumable, ConsumableType, ConsumableMovement, UserActivity]  # all models to array
 
     # import to models data from excel spreadsheet
     models.each do |model|
       imported_data ||= load_imported_data(model)
       if imported_data.map(&:valid?).all?
         imported_data.each(&:save!)
-        ActiveRecord::Base.connection.execute "ALTER SEQUENCE #{model.to_s.underscore}s_id_seq RESTART WITH #{model.maximum(:id).to_i.next}"
+        ActiveRecord::Base.connection.execute "ALTER SEQUENCE #{model.to_s.pluralize.underscore}_id_seq RESTART WITH #{model.maximum(:id).to_i.next}"
         true
       else
         imported_data.each_with_index do |data, index|

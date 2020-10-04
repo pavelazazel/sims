@@ -1,8 +1,3 @@
-css:
-  input::-webkit-input-placeholder {
-    color: #adb5bd !important;
-  }
-
 div data-controller='move-device'
   = search_form_for @q, html: { autocomplete: 'off' } do |f|
     table.table.table-dark.table-sm.table-striped.table-bordered.table-hover
@@ -63,7 +58,8 @@ div data-controller='move-device'
                   h4.text-light ↕
               .p-1
                 = button_tag class: 'btn btn-sm btn-info ml-1',
-                             title: 'Search'
+                             title: 'Search',
+                             id: 'btn_search'
                   = icon 'fas', 'search'
               .p-1
                 = link_to devices_path, class: 'btn btn-sm btn-danger ml-1',
@@ -76,10 +72,16 @@ div data-controller='move-device'
                     ondblclick="window.location.href = '#{edit_device_path(device)}'"
                     title='Double click to open device. Right click to quickly move']
             td.col-1 = device.id
-            td.col-3 = device.name.full_name
+            td.col-3
+              a[style="cursor: pointer"
+                onclick="clickSearch('#{device.name.full_name}', 'q_name_cont')" ]
+                = device.name.full_name
             td.col-2 = device.inventory_number
             td.col-2 = device.serial_number
-            td.col-2 = device.location.full_location
+            td.col-2
+              a[style="cursor: pointer"
+                onclick="clickSearch('#{device.location.full_location}', 'q_location_cont')" ]
+                = device.location.full_location
             td.col-2 = device.comment
 
   .modal role='dialog' tabindex='-1' data-target='move-device.modal' data-backdrop='false'

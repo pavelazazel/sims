@@ -17,6 +17,7 @@ nav.navbar.navbar-expand.navbar-dark
             a.dropdown-item.text-secondary href="#{ brands_path }" Brands
             a.dropdown-item.text-secondary href="#{ locations_path }" Locations
             a.dropdown-item.text-secondary href="#{ users_path }" Users
+            a.dropdown-item.text-secondary href="#{ user_activities_path }" History
             .dropdown-divider style='border-color: #6c757d;'
             h6.dropdown-header.text-white-50.text-right Consumables
             a.dropdown-item.text-secondary href="#{ consumable_movements_path }" Movements
@@ -27,7 +28,7 @@ nav.navbar.navbar-expand.navbar-dark
             a.dropdown-item.text-secondary href="#{ devices_path(format: :xlsx) }" Download as Excel
   a.text-light.mr-4 href="/users/#{ current_user.id }/edit"
     - if current_user.image.attached?
-      = image_tag current_user.image, size: 50, style: 'border-radius: 100px;'
+      = image_tag current_user.image, class: 'avatar', size: 50
     - else
       = current_user.username
   button type='button' class='btn btn-outline-secondary navbar-btn navbar-right'

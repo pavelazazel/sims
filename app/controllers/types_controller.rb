@@ -9,11 +9,13 @@ class TypesController < ApplicationController
 
   def edit
     @type = Type.find(params[:id])
+    @history = changes(@type)
   end
 
   def create
     @type = Type.new(type_params)
     if @type.save
+      record_activity new_obj: @type
       redirect_to types_path
     else
       render :new
@@ -22,7 +24,9 @@ class TypesController < ApplicationController
 
   def update
     @type = Type.find(params[:id])
+    old_obj = @type.dup
     if @type.update(type_params)
+      record_activity old_obj: old_obj, new_obj: @type
       redirect_to types_path
     else
       render :edit
@@ -32,6 +36,7 @@ class TypesController < ApplicationController
   def destroy
     @type = Type.find(params[:id])
     @type.destroy
+    record_activity old_obj: @type
     redirect_to types_path
   end
 

@@ -9,7 +9,6 @@ export default class extends Controller {
     window.action = 'send'
     var types;
     var typeSelector;
-    var consumables;
 
     var request_types = this.create_request('GET', 'consumables/get_types', false);
     request_types.onload = function() {

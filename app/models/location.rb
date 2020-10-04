@@ -24,4 +24,8 @@ class Location < ApplicationRecord
   def full_location
     "#{department} #{room}"
   end
+
+  def history_title
+    "#{department}-#{room}"
+  end
 end

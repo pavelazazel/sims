@@ -11,6 +11,7 @@ class UsersController < ApplicationController
     if user_signed_in?
       @user = User.new(user_params)
       if @user.save
+        record_activity new_obj: @user
         redirect_to users_path
       else
         render :new
@@ -20,6 +21,14 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    @history = []
+    history = UserActivity.where(object_type: 'session',
+                                 user_id: @user.id).order("created_at DESC").take(3)
+    history.each { |h| @history.append('[' + h.created_at.to_s + '] ' +
+                                       h.user.username + ' ' +
+                                       h.action + ' ' +
+                                       h.object_type +
+                                       (h.info.blank? ? '' : ": #{h.info}")) }
   end
 
   def update
@@ -36,6 +45,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     @user.destroy
+    record_activity old_obj: @user
     redirect_to users_path
   end
 

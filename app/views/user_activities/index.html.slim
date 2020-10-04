@@ -1,0 +1,15 @@
+.container-fluid
+  .row
+    = render 'filter'
+    .col.text-light
+      ul style='list-style-type:none'
+        - @user_activities.each do |activity|
+          - img = ' ⚪ '
+          - if activity.user.image.attached?
+            - img = image_tag activity.user.image, size: 25, style: 'border-radius: 30px;'
+          li = img + ' [' + activity.created_at.to_s + ']: ' + activity.user.username \
+            + ' ' + activity.action + ' ' + activity.object_type \
+            + (activity.object_id > 0 ? ' №' + activity.object_id.to_s : '') \
+            + (activity.info.present? ? ': ' + activity.info : '')
+      .d-flex
+        .p-1.flex-grow-1.mr-auto = will_paginate

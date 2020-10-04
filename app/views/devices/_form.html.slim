@@ -30,7 +30,7 @@
             .form-row
               = form.label :comment, class: 'ml-2 text-light col-2'
               = form.text_area :comment, class: 'text-light bg-secondary text-light custom-textarea', style: 'height: 150px; width: 345px'
-          - if action_name == 'edit'
+          - if action_name == 'edit' && @device.name.consumable.ids.present?
             p
               .form-row
                 .ml-2.text-light.col-1.mr-3 #{Device.human_attribute_name :consumables}:
@@ -44,4 +44,5 @@
                                                                method: :delete,
                                                                data: { confirm: 'Are you sure?' } if action_name == 'edit'
       .col
-        = image_tag @device.name.image.variant(resize: '350x350') if action_name == 'edit' && @device.name.image.attached?
+        = image_tag @device.name.image.variant(resize: '350x350'), class: 'img-border' if action_name == 'edit' && @device.name.image.attached?
+        = render partial: 'layouts/history'

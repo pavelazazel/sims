@@ -1,10 +1,14 @@
 import { Controller } from 'stimulus'
 
+const TYPE_IDS = [3, 8]; // SET THIS ARRAY ACCORDING TO YOUR DEVICE TYPE_IDS IN TABLE OF TYPES
+const CONSUMABLE_TYPE_ID = 1; // SET THIS CONSTANT ACCORDING TO YOUR CONSUMABLE TYPE_ID IN TABLE OF CONSUMABLE TYPES
+
 export default class extends Controller {
-  static targets = [ 'input', 'instruction', 'info', 'cancel', 'timer' ]
+  static targets = [ 'input', 'instruction', 'info', 'cancel', 'timerReload', 'timerAbort' ]
 
   connect() {
     window.which_device = false;
+    window.unnumbered_room = false;
     var request = this.create_request('GET', 'get_locations', true);
     request.onload = function() {
       window.locations = JSON.parse(request.response);
@@ -12,16 +16,22 @@ export default class extends Controller {
     request.send();
   }
 
-  changeInput() {
-    if (which_device) {
-      var input = parseInt(this.inputTarget.value);
+  changeInput(is_enter) {
+    var input = parseInt(this.inputTarget.value);
+    if (window.which_device) {
       ((input > 0) && (input <= window.devices.length)) ? this.move(window.devices[input-1]) : this.clearInput();
     } else {
-      this.checkLocation(false);
+      if (window.unnumbered_room) {
+        if (is_enter == true) {
+          this.get_devices(window.locations[input].department, window.locations[input].room);
+        }
+      } else {
+        this.checkLocation(false);
+      }
     }
   }
 
-  checkLocation(isEnter) {
+  checkLocation(is_enter) {
     var inputLocation = this.inputTarget.value;
     var department = '';
     switch(inputLocation[0]) {
@@ -29,10 +39,13 @@ export default class extends Controller {
         department = 'orbeli';
         break;
       case '*':
-        department = 'prosvet'
+        department = 'prosvet';
+        break;
+      case '+':
+        this.unnumberedRoom();
         break;
       default:
-        department = 'sikeyrosa'
+        department = 'sikeyrosa';
     }
     var room = Number(inputLocation.replace(/\D+/g,''));
     var location_found = false;
@@ -46,20 +59,58 @@ export default class extends Controller {
         }
       }
     }
-    if (location_found && (sub_room == 1 || isEnter)) {
+    if (location_found && (sub_room == 1 || is_enter)) {
       this.get_devices(department, room);
     }
   }
 
+  unnumberedRoom() {
+    this.clearInput();
+    this.start_reload_timer();
+    var sUnnumRooms = []; var oUnnumRooms = []; var pUnnumRooms = [];
+    var allUnnumRooms = [sUnnumRooms, oUnnumRooms, pUnnumRooms];
+    var allUnnumRoomsDepNames = ['Сикейроса', 'Орбели', 'Просвещения'];
+    for (var i = 0; i < window.locations.length; i++) {
+      if (isNaN(parseInt(locations[i].room))) {
+        switch(locations[i].department) {
+          case 'sikeyrosa':
+            sUnnumRooms.push(i);
+            break;
+          case 'orbeli':
+            oUnnumRooms.push(i);
+            break;
+          case 'prosvet':
+            pUnnumRooms.push(i);
+            break;
+          default:
+            console.log('unnumberedRoom - department error');
+            alert('Упс! Что-то не так, обратитесь к системному администратору');
+            document.location.reload(true);
+        }
+      }
+    }
+    this.instructionTarget.textContent = 'Введите номер, которому соответствует описание Вашего кабинета и нажмите Enter';
+    var unnumRoomsHTML = '<div class="container"> <div class="row">';
+    allUnnumRooms.forEach(function(dep, i, allUnnumRooms) {
+      unnumRoomsHTML += '<div class="col"><p><h3>' + (allUnnumRoomsDepNames[i]) + '</h3></p>';
+      dep.forEach(function(unnumRoom, j, dep) {
+        unnumRoomsHTML += '<p align="left">' + unnumRoom + ') ' + locations[unnumRoom].room + '</p>';
+      });
+      unnumRoomsHTML += '</div>';
+    });
+    unnumRoomsHTML += '</div></div>';
+    this.infoTarget.innerHTML = unnumRoomsHTML;
+    window.unnumbered_room = true;
+  }
+
   get_devices(department, room) {
-    var type_ids = [3, 8];       // SET THIS ARRAY ACCORDING TO YOUR DEVICE TYPE_IDS IN TABLE OF TYPES
     var devices = [];
-    for (var i = 0; i < type_ids.length; i++) {
+    for (var i = 0; i < TYPE_IDS.length; i++) {
       var request = this.create_request('POST', 'get_devices', false);
       request.onload = function() {
         devices = devices.concat(JSON.parse(request.response));
       };
-      request.send('type_id=' + type_ids[i] + '&department=' + department + '&room=' + room);
+      request.send('type_id=' + TYPE_IDS[i] + '&department=' + department + '&room=' + room);
     }
     if (devices.length == 1) {
       this.move(devices[0]);
@@ -73,26 +124,26 @@ export default class extends Controller {
   }
 
   move(device) {
-    var consumable_type_id = 1;  // SET THIS VARIABLE ACCORDING TO YOUR CONSUMABLE TYPE_ID IN TABLE OF CONSUMABLE TYPES
     var request = this.create_request('POST', 'move', false);
     var cartridge;
     request.onload = function() {
       cartridge = JSON.parse(request.response);
     };
-    request.send('consumable_type_id=' + consumable_type_id + '&name_id=' + device[0] + '&location_id=' + device[2]);
+    request.send('consumable_type_id=' + CONSUMABLE_TYPE_ID + '&name_id=' + device[0] + '&location_id=' + device[2]);
     this.clearInput();
     this.inputTarget.style.display = 'none';
+    this.timerReloadTarget.style.display = 'none';
     if (cartridge.title) {
       this.instructionTarget.textContent = 'Ваш картридж ' + cartridge.title;
       this.infoTarget.textContent = 'Возьмите его из коробки ' + cartridge.placement
                                   + '. Использованный картридж положите в коробку "На заправку"';
       this.cancelTarget.style.display = 'block';
-      this.start_timer(10);
+      this.start_abort_timer();
       var abort_request = this.create_request('POST', 'abort', true);
       window.addEventListener('keydown', function(event){
-        if (event.key == 'Delete') {
+        if (event.key == '.' || event.key == 'Delete') {
           abort_request.send('movement_id=' + cartridge.movement_id);
-          alert('Смена картриджа отменена!');
+          alert('Смена картриджа отменена! Нажмите Enter чтобы продолжить');
           document.location.reload(true);
         }
       }, true);
@@ -107,6 +158,7 @@ export default class extends Controller {
   }
 
   which_device(devices) {
+    this.start_reload_timer();
     this.instructionTarget.textContent = 'Введите порядковый номер принтера, которому требуется замена картриджа';
     var devices_str = '<div class="container"> <div class="row">';
     devices.forEach(function(device, i, devices) {
@@ -121,15 +173,31 @@ export default class extends Controller {
     this.clearInput();
   }
 
-  start_timer(sec) {
-    this.timerTarget.innerHTML = 'Чтобы отменить действие нажмите клавишу Del(.)   Осталось ' + sec + ' секунд';
+  start_abort_timer(sec = 10) {
+    this.timerAbortTarget.innerHTML = 'Чтобы отменить действие нажмите клавишу Del(.)   Осталось ' + sec + ' секунд';
     setInterval(function(target) {
       sec--;
       target.innerHTML = 'Чтобы отменить действие нажмите клавишу Del(.)   Осталось ' + sec + ' секунд';
       if (sec < 1) {
         document.location.reload(true);
       }
-    }, 1000, this.timerTarget);
+    }, 1000, this.timerAbortTarget);
+  }
+
+  start_reload_timer(sec = 60) {
+    if (!window.reloadTimerStarted) {
+      window.reloadTimerStarted = true;
+      this.timerReloadTarget.innerHTML = 'Автоматический выход через ' + sec +
+                                         ' секунд <br> Для немедленного выхода нажмите минус(-)';
+      setInterval(function(target) {
+        sec--;
+        target.innerHTML = 'Автоматический выход через ' + sec +
+                           ' секунд <br> Для немедленного выхода нажмите минус(-)';
+        if (sec < 1) {
+          document.location.reload(true);
+        }
+      }, 1000, this.timerReloadTarget);
+    }
   }
 
   create_request(http_method, url, async) {
@@ -139,9 +207,16 @@ export default class extends Controller {
     return request;
   }
 
-  isEnter(event) {
+  isKeyDown(event) {
     if (event.key == 'Enter') {
-      this.checkLocation(true);
+      if (window.unnumbered_room) {
+        this.changeInput(true);
+      } else {
+        this.checkLocation(true);
+      }
+    }
+    if (event.key == '-') {
+      document.location.reload(true);
     }
   }
 

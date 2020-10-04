@@ -10,6 +10,7 @@ class DevicesController < ApplicationController
     @consumables = Consumable.all
     @consumable_types = ConsumableType.all
     @consumable_movements = ConsumableMovement.all
+    @user_activities = UserActivity.all
     @departments = Location::DEPARTMENTS
 
     @q = Device.order(:id).ransack(params_for_ransack(params.dup))
@@ -18,12 +19,13 @@ class DevicesController < ApplicationController
     @devices = @devices_result.paginate(page: params[:page],
                                         per_page: cookies[:per_page])
 
-    # Excel export
     respond_to do |format|
       format.xlsx {
         response.headers[
           'Content-Disposition'
         ] = "attachment; filename=stock.xlsx"
+        record_activity action: 'create', object_type: 'database',
+                      object_id: '0', info: 'excel file downloaded'
       }
       format.html { render :index }
     end
@@ -35,11 +37,13 @@ class DevicesController < ApplicationController
 
   def edit
     @device = Device.find(params[:id])
+    @history = changes(@device)
   end
 
   def create
     @device = Device.new(device_params)
     if @device.save
+      record_activity new_obj: @device
       redirect_to devices_path
     else
       render :new
@@ -48,7 +52,9 @@ class DevicesController < ApplicationController
 
   def update
     @device = Device.find(params[:id])
+    old_obj = @device.dup
     if @device.update(device_params)
+      record_activity old_obj: old_obj, new_obj: @device
       redirect_to devices_path
     else
       render :edit
@@ -58,6 +64,7 @@ class DevicesController < ApplicationController
   def destroy
     @device = Device.find(params[:id])
     @device.destroy
+    record_activity old_obj: @device
     redirect_to devices_path
   end
 
@@ -98,10 +105,23 @@ class DevicesController < ApplicationController
           break
         end
       end
+      old_obj = target_device
+      old_obj_swap = Device.find(swap_device_id)
       is_saved = Device.update(swap_device_id, location_id: target_device.location.id) &&
                  Device.update(target_device.id, location_id: params[:location_id])
+      if is_saved
+        record_activity old_obj: old_obj_swap,
+                        new_obj: Device.find(swap_device_id),
+                        action: 'update'
+      end
     else
+      old_obj = Device.find(params[:device_id])
       is_saved = Device.update(params[:device_id], location_id: params[:location_id])
+    end
+    if is_saved
+      record_activity old_obj: old_obj,
+                      new_obj: Device.find(params[:device_id]),
+                      action: 'update'
     end
     respond_to do |format|
       format.json { render json: '{ "title": "' + is_saved.to_s + '" }' }
@@ -118,7 +138,6 @@ class DevicesController < ApplicationController
   def params_for_ransack(ransack_params)
     # search by several words
     unless ransack_params.dig(:q, :name_cont).blank? && ransack_params.dig(:q, :location_cont).blank?
-      @will_paginate = false
       ransack_params[:q][:combinator] = 'and'
       ransack_params[:q][:groupings] = []
       ransack_params = split_query_words(:name_cont, ransack_params)

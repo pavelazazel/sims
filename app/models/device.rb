@@ -23,4 +23,8 @@ class Device < ApplicationRecord
   ransack_alias :location, :location_department_or_location_room
 
   self.per_page = 15
+
+  def history_title
+    self.name.full_name
+  end
 end

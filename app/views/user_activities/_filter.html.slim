@@ -1,0 +1,74 @@
+.col-2.text-white-50
+  .border.rounded.p-2
+    = form_for :user_activities, html: { method: :get } do |f|
+      details open=('true' if @users_all.size < 7)
+        summary User
+        - @users_all.each do |user|
+          .custom-control.custom-checkbox
+            - if @filter_params.present? && @filter_params[:user_ids].present?
+              - checked = @filter_params[:user_ids].include?(user.id.to_s) ? true : false
+            = check_box_tag 'filter[user_ids][]', user.id, checked
+            = label_tag :user, user.username, class: 'ml-1'
+      details open='true'
+        summary Action
+        - @actions_all.each do |action|
+          .custom-control.custom-checkbox
+            - if @filter_params.present? && @filter_params[:actions].present?
+              - checked = @filter_params[:actions].include?(action) ? true : false
+            = check_box_tag 'filter[actions][]', action, checked
+            = label_tag :action, action, class: 'ml-1'
+      details open='true'
+        summary Object type
+        - @object_types_all.each do |object_type|
+          .custom-control.custom-checkbox
+            - if @filter_params.present? && @filter_params[:object_types].present?
+              - checked = @filter_params[:object_types].include?(object_type) ? true : false
+            = check_box_tag 'filter[object_types][]', object_type, checked
+            = label_tag :object_type, object_type.gsub('_', ' '), class: 'ml-1'
+      p
+      .input-group title='Object ID'
+        .input-group-prepend
+          span.input-group-text.bg-light.text-secondary style='width: 56px' №
+        - if @filter_params.present? && @filter_params[:object_id].present?
+          - number_field_content = @filter_params[:object_id]
+        = number_field_tag 'filter[object_id]',
+                            number_field_content,
+                            min: 1,
+                            class: 'form-control bg-secondary text-light',
+                            placeholder: 'Object ID'
+      p
+      #datetimepickerfrom.input-group.date.mt-4 data-target-input='nearest' title='Date from...'
+        .input-group-append data-target='#datetimepickerfrom' data-toggle='datetimepicker'
+          .input-group style='width: 56px'
+            .input-group-prepend
+              .input-group-text.bg-light
+                i.fa.fa-calendar
+                i.fa.fa-arrow-right.ml-1
+        - if @filter_params.present? && @filter_params[:date_from].present?
+            - datefrom_field_content = @filter_params[:date_from]
+        input.form-control.datetimepicker-input.bg-secondary.text-light[
+          name='filter[date_from]'
+          type='text'
+          placeholder='Date from...'
+          data-target='#datetimepickerfrom'
+          value="#{datefrom_field_content}"]
+      p
+      #datetimepickerto.input-group.date data-target-input='nearest' title='Date to...'
+        .input-group-append data-target='#datetimepickerto' data-toggle='datetimepicker'
+          .input-group style='width: 56px'
+            .input-group-prepend
+              .input-group-text.bg-light
+                i.fa.fa-arrow-right
+                i.fa.fa-calendar.ml-1
+        - if @filter_params.present? && @filter_params[:date_to].present?
+            - dateto_field_content = @filter_params[:date_to]
+        input.form-control.datetimepicker-input.bg-secondary.text-light[
+          name='filter[date_to]'
+          type='text'
+          placeholder='Date to...'
+          data-target='#datetimepickerto'
+          value="#{dateto_field_content}"]
+      p
+      = submit_tag 'Apply', class: 'btn btn-outline-success'
+      = link_to user_activities_path, class: 'ml-2 btn btn-outline-danger'
+        | Reset

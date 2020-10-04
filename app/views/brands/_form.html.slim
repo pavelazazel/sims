@@ -6,7 +6,6 @@
           li.text-danger.ml-3
             = msg
 
-  / TODO: fix: when errors appear, the structure below collapses
   .form-group.form-control-sm
     p
       .form-row
@@ -14,3 +13,6 @@
         = form.text_field :title, class: 'bg-secondary text-light custom-input'
     p
       = form.submit class: "btn btn-outline-success"
+
+    .ml-2.col-5
+      = render partial: 'layouts/history'

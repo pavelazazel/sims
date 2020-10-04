@@ -23,4 +23,8 @@ class Name < ApplicationRecord
   def full_name
     "#{type.title} #{brand.title} #{model}"
   end
+
+  def history_title
+    full_name
+  end
 end
