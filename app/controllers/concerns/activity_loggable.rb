@@ -47,7 +47,7 @@ module ActivityLoggable
         end
       end
     else
-      (old_attrs || new_attrs).each { |attr| result += attr + ' ' }
+      (old_attrs || new_attrs).each { |attr| result += (attr || '') + ' ' }
     end
     result
   end

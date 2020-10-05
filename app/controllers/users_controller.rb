@@ -11,7 +11,8 @@ class UsersController < ApplicationController
     if user_signed_in?
       @user = User.new(user_params)
       if @user.save
-        record_activity new_obj: @user
+        record_activity new_obj: @user,
+                        info: @user.username
         redirect_to users_path
       else
         render :new
@@ -45,7 +46,8 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     @user.destroy
-    record_activity old_obj: @user
+    record_activity old_obj: @user,
+                    info: @user.username
     redirect_to users_path
   end
 
