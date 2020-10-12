@@ -1,17 +1,24 @@
-nav.navbar.navbar-expand.navbar-dark
-  a.navbar-brand.text-white href="#{root_path}"
+nav.navbar.navbar-expand
+  a.navbar-brand href="#{root_path}"
     =image_tag 'logo.png', size: 40
-  .collapse.navbar-collapse id='navbarNav'
+  .collapse.navbar-collapse#navbarNav
     ul.navbar-nav
       li class="nav-item #{ 'active' if controller_name == 'devices' }"
-        a.nav-link href="#{ root_path }" Devices
+        a.nav-link.text-nav-theme href="#{ root_path }" Devices
       li class="nav-item #{ 'active' if controller_name == 'consumables' }"
-        a.nav-link href="#{ consumables_path }" Consumables
+        a.nav-link.text-nav-theme href="#{ consumables_path }" Consumables
       div data-controller='nav-dropdown'
         li.nav-item.dropdown
-          a.nav-link.dropdown-toggle id='navbarDropdownMenuLink' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' data-action='click->nav-dropdown#toggle' Administration
-          .dropdown-menu.bg-dark aria-labelledby='navbarDropdownMenuLink' data-target='nav-dropdown.menu'
-            h6.dropdown-header.text-white-50.text-right Catalogs
+          a.nav-link.dropdown-toggle.pointer.text-nav-theme[id='navbarDropdownMenuLink'
+                                                            role='button'
+                                                            data-toggle='dropdown'
+                                                            aria-haspopup='true'
+                                                            aria-expanded='false'
+                                                            data-action='click->nav-dropdown#toggle']
+                                                            | Administration
+          .dropdown-menu.bg-theme[aria-labelledby='navbarDropdownMenuLink'
+                                  data-target='nav-dropdown.menu']
+            h6.dropdown-header.text-50-theme.text-right Catalogs
             a.dropdown-item.text-secondary href="#{ names_path }" Names
             a.dropdown-item.text-secondary href="#{ types_path }" Types
             a.dropdown-item.text-secondary href="#{ brands_path }" Brands
@@ -19,17 +26,28 @@ nav.navbar.navbar-expand.navbar-dark
             a.dropdown-item.text-secondary href="#{ users_path }" Users
             a.dropdown-item.text-secondary href="#{ user_activities_path }" History
             .dropdown-divider style='border-color: #6c757d;'
-            h6.dropdown-header.text-white-50.text-right Consumables
+            h6.dropdown-header.text-50-theme.text-right Consumables
             a.dropdown-item.text-secondary href="#{ consumable_movements_path }" Movements
             a.dropdown-item.text-secondary href="#{ consumable_types_path }" Types
             .dropdown-divider style='border-color: #6c757d;'
-            h6.dropdown-header.text-white-50.text-right Excel
+            h6.dropdown-header.text-50-theme.text-right Excel
             a.dropdown-item.text-secondary href="#{ new_devices_import_path }" Upload from Excel
             a.dropdown-item.text-secondary href="#{ devices_path(format: :xlsx) }" Download as Excel
-  a.text-light.mr-4 href="/users/#{ current_user.id }/edit"
+  - if !(cookies[:darkmode] == 'true')
+    a.theme-icon.text-secondary.mr-4 onclick='document.cookie = "darkmode = true; path=/"; document.location.reload(true);'
+      = icon 'fas', 'moon'
+  - else
+    a.theme-icon.text-light.mr-4 onclick='document.cookie = "darkmode = false; path=/"; document.location.reload(true);'
+      = icon 'fas', 'sun'
+  a.text-nav-theme.mr-4 href="/users/#{ current_user.id }/edit"
     - if current_user.image.attached?
-      = image_tag current_user.image, class: 'avatar', size: 50
+      = image_tag current_user.image,
+                  class: 'avatar',
+                  size: 50
     - else
       = current_user.username
-  button type='button' class='btn btn-outline-secondary navbar-btn navbar-right'
-    = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'text-reset text-decoration-none'
+  button.btn.btn-outline-secondary.btn-signout.navbar-btn.navbar-right type='button'
+    = link_to 'Sign out',
+              destroy_user_session_path,
+              method: :delete,
+              class: 'text-reset text-decoration-none'

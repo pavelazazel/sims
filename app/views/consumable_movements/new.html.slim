@@ -1,21 +1,20 @@
-h3 class="text-light ml-2" Move Consumable
+h3.text-theme.ml-2 Move Consumable
 = form_with model: @consumable_movement, html: { autocomplete: 'off' }, local: true do |form|
   - if @consumable_movement.errors.any?
-      div id="error_explanation"
-        h2.text-danger.ml-3 #{pluralize(@consumable_movement.errors.count, "error")} prohibited this brand from being saved:
+      div#error_explanation
+        h2.text-danger.ml-3 #{pluralize(@consumable_movement.errors.count, 'error')} prohibited this brand from being saved:
         - @consumable_movement.errors.full_messages.each do |msg|
           li.text-danger.ml-3
             = msg
 
-  / TODO: fix: when errors appear, the structure below collapses
-  .form-group.form-control-sm data-controller='choice'
+  .form-group.form-control-sm.text-theme data-controller='choice'
     p
       .form-row
-        =form.label :consumable, class: 'ml-2 text-light col-2'
+        =form.label :consumable, class: 'ml-2 col-2'
         =form.collection_select :consumable_id, Consumable.all, :id, :title, { prompt: true }, { 'data-target': 'choice.select1', class: 'custom-select' }
     p
       .form-row
-        =form.label 'to location', class: 'ml-2 text-light col-2'
+        =form.label 'to location', class: 'ml-2 col-2'
         =form.collection_select :location_id, Location.all, :id, :full_location, { prompt: true }, { 'data-target': 'choice.select2', class: 'custom-select' }
     p
       =form.submit 'Move', class: 'btn btn-outline-success'

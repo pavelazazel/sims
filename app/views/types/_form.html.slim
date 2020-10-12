@@ -1,17 +1,17 @@
 = form_with model: @type, html: { autocomplete: 'off' }, local: true do |form|
   - if @type.errors.any?
-      div id="error_explanation"
-        h2.text-danger.ml-3 #{pluralize(@type.errors.count, "error")} prohibited this type from being saved:
+      div#error_explanation
+        h2.text-danger.ml-3 #{pluralize(@type.errors.count, 'error')} prohibited this type from being saved:
         - @type.errors.full_messages.each do |msg|
           li.text-danger.ml-3
             = msg
 
   .form-group.form-control-sm
     p
-      .form-row
-        = form.label :title, class: 'ml-2 text-light col-1'
-        = form.text_field :title, class: 'bg-secondary text-light custom-input'
+      .form-row.text-theme
+        = form.label :title, class: 'ml-2 col-1'
+        = form.text_field :title, class: 'custom-input'
     p
-      = form.submit class: "btn btn-outline-success"
+      = form.submit class: 'btn btn-outline-success'
 
     = render partial: 'layouts/history'

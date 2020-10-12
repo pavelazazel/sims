@@ -1,19 +1,19 @@
-.ml-2
-  h1.text-light Import Items From Excel
+.ml-2.text-theme
+  h1 Import Items From Excel
 
-  p.text-light Note: Only import spreadsheets that were previously downloaded from this application.
+  p Note: Only import spreadsheets that were previously downloaded from this application.
 
-  h3.text-light Requirements
-  ul.text-light
+  h3 Requirements
+  ul
     li = link_to 'Download the template spreadsheet as Excel', devices_path(format: :xlsx)
     li That way your have a better chance of successful import
 
-  h5.text-light Select File
+  h5 Select File
   = form_for @devices_import do |f|
    - if @devices_import.errors.any?
-      h2.text-danger #{pluralize(@devices_import.errors.count, "error")} prevented us from importing your spreadsheet. Please update your spreadsheet and try agin.
+      h2.text-danger #{pluralize(@devices_import.errors.count, 'error')} prevented us from importing your spreadsheet. Please update your spreadsheet and try agin.
         - @devices_import.errors.full_messages.each do |msg|
           li.text-danger = msg
 
-   = f.file_field :file, class: "text-light"
-   = f.submit "Import File", class: "btn btn-outline-success"
+   = f.file_field :file
+   = f.submit 'Import File', class: 'btn btn-outline-success'

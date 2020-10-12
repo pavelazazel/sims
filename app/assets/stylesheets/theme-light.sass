@@ -1,0 +1,60 @@
+$pagination-color-theme: #6c757d
+$light-secondary-color: #e9ecef
+$border-theme: 1px solid #6c757d
+$bg-choice-theme: #e9ecef
+$text-choice-theme: black
+$highlight-choice-theme: white
+
+.bg-theme
+  @extend .bg-light
+  &.dropdown-menu
+    .dropdown-item:hover
+      background-color: $light-secondary-color
+
+.table-theme
+  @extend .table-light
+  @extend .bg-light
+  border-color: #f8f9fa
+
+.tr-bg-theme
+  @extend .thead-light
+
+.head-input-theme
+  @extend .bg-light
+  @extend .text-body
+
+.sort-button-theme
+  @extend .text-secondary
+
+.text-nav-theme
+  @extend .text-secondary
+
+.active .text-nav-theme
+  @extend .text-body
+
+.text-50-theme
+  @extend .text-black-50
+
+.text-theme
+  @extend .text-body
+
+.text-filter-theme
+  @extend .text-black-50
+
+.input-theme
+  @extend .text-body
+  background-color: $light-secondary-color
+
+.theme-icon:hover
+  cursor: pointer
+
+.btn-perpage-theme
+  width: 80px
+  &:hover,
+  &.active
+    @extend .text-secondary
+    background-color: $light-secondary-color !important
+
+.btn-signout:hover
+  @extend .text-secondary
+  background-color: $light-secondary-color !important

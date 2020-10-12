@@ -7,8 +7,8 @@ div data-controller='refill-consumable'
     = icon 'fas', 'recycle', 'Refill'
   p
 
-  table class="px-2 table table-dark table-sm table-striped table-bordered table-hover table-responsive"
-    tr class="bg-secondary"
+  table.px-2.table.table-theme.table-sm.table-striped.table-bordered.table-hover.table-responsive
+    tr.tr-bg-theme
       th id
       th Type
       th Title
@@ -34,6 +34,6 @@ div data-controller='refill-consumable'
           #{link_to '', consumable_path(consumable), class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash', method: :delete, data: { confirm: 'Are you sure?' } }
 
 
-  .modal role="dialog" tabindex="-1" data-target="refill-consumable.modal" data-backdrop="false"
-    .modal-dialog role="document"
-      .modal-content
+  .modal role='dialog' tabindex='-1' data-target='refill-consumable.modal' data-backdrop='false'
+    .modal-dialog role='document'
+      .modal-content.bg-modal

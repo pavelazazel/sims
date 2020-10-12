@@ -2,24 +2,32 @@ td
   word-wrap: break-word
 
 .custom-input
-  border: 1px solid white
+  border: $border-theme
   border-radius: 2.5px
   height: 44px
   width: 345px
   padding: 5px
+  @extend .input-theme
 
 .custom-textarea
-  border: 1px solid white
+  border: $border-theme
   padding: 3px
   border-radius: 2.5px
+  @extend .input-theme
 
 .img-border
-  border: 1px solid white
+  border: $border-theme
   border-radius: 2.5px
 
 .avatar
   border: 1px solid #6c757d
   border-radius: 100px
+
+.pointer
+  cursor: pointer
+
+.bg-modal
+  background-color: #e9ecef !important
 
 input::-webkit-input-placeholder
   color: #adb5bd !important

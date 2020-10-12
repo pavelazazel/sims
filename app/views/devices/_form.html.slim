@@ -9,34 +9,34 @@
   .container-fluid
     .row
       .col-5
-        .form-group.form-control-sm data-controller='choice'
+        .form-group.form-control-sm.text-theme data-controller='choice'
           p
             .form-row
-              = form.label :name, class: 'ml-2 text-light col-2'
+              = form.label :name, class: 'ml-2 col-2'
               = form.collection_select :name_id, Name.all, :id, :full_name, { prompt: true }, { 'data-target': 'choice.select1' }
           p
             .form-row
-              = form.label :inventory_number, class: 'ml-2 text-light col-2'
-              = form.text_field :inventory_number, class: 'bg-secondary text-light custom-input'
+              = form.label :inventory_number, class: 'ml-2 col-2'
+              = form.text_field :inventory_number, class: 'custom-input'
           p
             .form-row
-              = form.label :serial_number, class: 'ml-2 text-light col-2'
-              = form.text_field :serial_number, class: 'bg-secondary text-light custom-input'
+              = form.label :serial_number, class: 'ml-2 col-2'
+              = form.text_field :serial_number, class: 'custom-input'
           p
             .form-row
-              = form.label :location, class: 'ml-2 text-light col-2'
+              = form.label :location, class: 'ml-2 col-2'
               = form.collection_select :location_id, Location.all, :id, :full_location, { prompt: true }, { 'data-target': 'choice.select2' }
           p
             .form-row
-              = form.label :comment, class: 'ml-2 text-light col-2'
-              = form.text_area :comment, class: 'text-light bg-secondary text-light custom-textarea', style: 'height: 150px; width: 345px'
+              = form.label :comment, class: 'ml-2 col-2'
+              = form.text_area :comment, class: 'custom-textarea', style: 'height: 150px; width: 345px'
           - if action_name == 'edit' && @device.name.consumable.ids.present?
             p
               .form-row
-                .ml-2.text-light.col-1.mr-3 #{Device.human_attribute_name :consumables}:
+                .ml-2.col-1.mr-3 #{Device.human_attribute_name :consumables}:
                 ul
                   - @device.name.consumable.ids.each do |id|
-                    li.text-light.ml-5 #{Consumable.find(id).consumable_type.title} #{Consumable.find(id).title}
+                    li.ml-5 #{Consumable.find(id).consumable_type.title} #{Consumable.find(id).title}
           br
             .form-row
               = form.submit class: 'btn btn-outline-success mr-1'

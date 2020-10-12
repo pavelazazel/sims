@@ -1,12 +1,12 @@
 .container-fluid
   .row
-    .col-5.text-left
-      p class='ml-2 text-light col-5' #{Name.human_attribute_name :type}: #{@name.type.title}
-      p class='ml-2 text-light col-5' #{Name.human_attribute_name :brand}: #{@name.brand.title}
-      p class='ml-2 text-light col-5' #{Name.human_attribute_name :model}: #{@name.model}
-      p class='ml-2 text-light col-5' #{Consumable.human_attribute_name :consumables}:
+    .col-5.text-left.text-theme
+      p.ml-2.col-5 #{Name.human_attribute_name :type}: #{@name.type.title}
+      p.ml-2.col-5 #{Name.human_attribute_name :brand}: #{@name.brand.title}
+      p.ml-2.col-5 #{Name.human_attribute_name :model}: #{@name.model}
+      p.ml-2.col-5 #{Consumable.human_attribute_name :consumables}:
       - @name.consumable.ids.each do |id|
-        p class='ml-5 text-light col-5' ➤ #{Consumable.find(id).consumable_type.title} #{Consumable.find(id).title}
+        p.ml-4.col-5 ➤ #{Consumable.find(id).consumable_type.title} #{Consumable.find(id).title}
     .col
       =image_tag @name.image.variant(resize: '350x350'), class: 'img-border' if @name.image.attached?
       .mt-5

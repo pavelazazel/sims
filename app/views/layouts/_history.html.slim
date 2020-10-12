@@ -1,11 +1,11 @@
-p.text-light.mt-5
+p.text-theme.mt-5
   - unless @history.blank? || @history[1].blank?
     | Last changes:
     ul style='list-style-type:none'
       - for i in 0...@history[1].length
-        li.text-light
+        li.text-theme
           - if @history[0][i].image.attached?
-            = image_tag @history[0][i].image, size: 25, style: 'border-radius: 30px;'
+            = image_tag @history[0][i].image, size: 25, style: 'border-radius: 30px'
           - else
             | ⚪
           = @history[1][i]

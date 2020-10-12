@@ -1,20 +1,20 @@
-h3 class="text-light ml-2" New User
+h3.text-theme.ml-2 New User
 = form_with model: @user, html: { autocomplete: 'off' }, local: true do |form|
   - if @user.errors.any?
-      div id="error_explanation"
-        h2.text-danger.ml-3 #{pluralize(@user.errors.count, "error")} prohibited this user from being saved:
+      div#error_explanation
+        h2.text-danger.ml-3 #{pluralize(@user.errors.count, 'error')} prohibited this user from being saved:
         - @user.errors.full_messages.each do |msg|
           li.text-danger.ml-3
             = msg
 
-  .form-group.form-control-sm
+  .form-group.form-control-sm.text-theme
     p
       .form-row
-        = form.label :username, class: 'ml-2 text-light col-1'
-        = form.text_field :username, class: 'bg-secondary text-light custom-input'
+        = form.label :username, class: 'ml-2 col-1'
+        = form.text_field :username, class: 'custom-input'
     p
       .form-row
-        = form.label :password, class: 'ml-2 text-light col-1'
-        = form.password_field :password, class: 'bg-secondary text-light custom-input'
+        = form.label :password, class: 'ml-2 col-1'
+        = form.password_field :password, class: 'custom-input'
     p
-      = form.submit class: "btn btn-outline-success"
+      = form.submit class: 'btn btn-outline-success'

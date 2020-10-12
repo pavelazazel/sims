@@ -1,7 +1,7 @@
 div data-controller='move-device'
   = search_form_for @q, html: { autocomplete: 'off' } do |f|
-    table.table.table-dark.table-sm.table-striped.table-bordered.table-hover
-        tr.bg-secondary.d-flex
+    table.table.table-theme.table-sm.table-striped.table-bordered.table-hover
+        tr.tr-bg-theme.d-flex
             th.col-1.d-flex
               .p-1
                 = link_to new_device_path, class: 'btn btn-sm btn-success',
@@ -9,53 +9,53 @@ div data-controller='move-device'
                   = icon 'fas', 'plus'
               .p-1.flex-fill
                 = f.search_field :id_eq,
-                                placeholder: 'ID',
-                                class: 'bg-secondary text-light form-control form-control-sm'
+                                 placeholder: 'ID',
+                                 class: 'head-input-theme form-control form-control-sm'
               .p-1
                 = sort_link(@q, :id_eq, hide_indicator: true) do
-                  h4.text-light ↕
+                  h4.sort-button-theme ↕
             th.col-3.d-flex
               .p-1.flex-fill
                 = f.search_field :name_cont,
-                                value: params.dig(:q, :name_cont),
-                                placeholder: 'Device name',
-                                class: 'bg-secondary text-light form-control form-control-sm'
+                                 value: params.dig(:q, :name_cont),
+                                 placeholder: 'Device name',
+                                 class: 'head-input-theme form-control form-control-sm'
               .p-1
                 = sort_link(@q, :name, ['name_type_title', 'name_brand_title', 'name_model'], hide_indicator: true) do
-                  h4.text-light ↕
+                  h4.sort-button-theme ↕
             th.col-2.d-flex
               .p-1.flex-fill
                 = f.search_field :inventory_number_cont,
-                                placeholder: 'Inventory №',
-                                class: 'bg-secondary text-light form-control form-control-sm'
+                                 placeholder: 'Inventory №',
+                                 class: 'head-input-theme form-control form-control-sm'
               .p-1
                 = sort_link(@q, :inventory_number, hide_indicator: true) do
-                  h4.text-light ↕
+                  h4.sort-button-theme ↕
             th.col-2.d-flex
               .p-1.flex-fill
                 = f.search_field :serial_number_cont,
-                                placeholder: 'Serial №',
-                                class: 'bg-secondary text-light form-control form-control-sm'
+                                 placeholder: 'Serial №',
+                                 class: 'head-input-theme form-control form-control-sm'
               .p-1
                 = sort_link(@q, :serial_number, hide_indicator: true) do
-                  h4.text-light ↕
+                  h4.sort-button-theme ↕
             th.col-2.d-flex
               .p-1.flex-fill
                 = f.search_field :location_cont,
-                                value: params.dig(:q, :location_cont),
-                                placeholder: 'Location',
-                                class: 'bg-secondary text-light form-control form-control-sm'
+                                 value: params.dig(:q, :location_cont),
+                                 placeholder: 'Location',
+                                 class: 'head-input-theme form-control form-control-sm'
               .p-1
                 = sort_link(@q, :location, ['location_department', 'location_room'], hide_indicator: true) do
-                  h4.text-light ↕
+                  h4.sort-button-theme ↕
             th.col-2.d-flex
               .p-1.flex-fill
                 = f.search_field :comment_cont,
-                                placeholder: 'Comment',
-                                class: 'bg-secondary text-light form-control form-control-sm'
+                                 placeholder: 'Comment',
+                                 class: 'head-input-theme form-control form-control-sm'
               .p-1
                 = sort_link(@q, :comment, hide_indicator: true) do
-                  h4.text-light ↕
+                  h4.sort-button-theme ↕
               .p-1
                 = button_tag class: 'btn btn-sm btn-info ml-1',
                              title: 'Search',
@@ -86,7 +86,7 @@ div data-controller='move-device'
 
   .modal role='dialog' tabindex='-1' data-target='move-device.modal' data-backdrop='false'
     .modal-dialog role='document'
-      .modal-content
+      .modal-content.bg-modal
 
 .d-flex
   .p-1.flex-grow-1.mr-auto = will_paginate @devices
@@ -94,12 +94,12 @@ div data-controller='move-device'
     .d-flex
       .p-1.text-right
         .btn-group.btn-group-toggle data-toggle='buttons'
-          label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:department].blank?}" style='width: 80px'
+          label class="btn btn-sm btn-outline-secondary btn-perpage-theme pointer #{'active' if cookies[:department].blank?}"
             = radio_button '', '', false,
               { onclick: "document.cookie = 'department = '; document.location.reload(true);" }
             | All
           - @departments.each do |department|
-            label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:department] == department}" style='width: 80px'
+            label class="btn btn-sm btn-outline-secondary btn-perpage-theme pointer #{'active' if cookies[:department] == department}"
               = radio_button '', '', false,
                 { onclick: "document.cookie = 'department = #{department}'; document.location.reload(true);" }
               = department.capitalize
@@ -107,7 +107,7 @@ div data-controller='move-device'
       .p-1.text-right
         .btn-group.btn-group-toggle data-toggle='buttons'
           - [15, 30, 50, 100].each do |per_page|
-            label class="btn btn-sm btn-outline-secondary #{'active' if cookies[:per_page].to_s == per_page.to_s}" style='width: 80px'
+            label class="btn btn-sm btn-outline-secondary btn-perpage-theme pointer #{'active' if cookies[:per_page].to_s == per_page.to_s}"
               = radio_button '', '', false,
                 { onclick: "document.cookie = 'per_page = #{per_page}'; document.location.reload(true);" }
               = per_page

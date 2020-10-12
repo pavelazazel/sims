@@ -1,20 +1,20 @@
 = form_with model: @location, html: { autocomplete: 'off' }, local: true do |form|
   - if @location.errors.any?
-      div id="error_explanation"
-        h2.text-danger.ml-3 #{pluralize(@location.errors.count, "error")} prohibited this location from being saved:
+      div#error_explanation
+        h2.text-danger.ml-3 #{pluralize(@location.errors.count, 'error')} prohibited this location from being saved:
         - @location.errors.full_messages.each do |msg|
           li.text-danger.ml-3
             = msg
 
-  .form-group.form-control-sm data-controller='choice'
+  .form-group.form-control-sm.text-theme data-controller='choice'
     p
       .form-row
-        = form.label :department, class: 'ml-2 text-light col-1'
+        = form.label :department, class: 'ml-2 col-1'
         = form.collection_select :department, Location::DEPARTMENTS, :itself, :to_s, { prompt: true }, { 'data-target': 'choice.selectNoSearch' }
     p
       .form-row
-        = form.label :room, class: 'ml-2 text-light col-1'
-        = form.text_field :room, class: 'bg-secondary text-light custom-input'
+        = form.label :room, class: 'ml-2 col-1'
+        = form.text_field :room, class: 'custom-input'
     p
       = form.submit class: 'btn btn-outline-success'
 

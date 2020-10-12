@@ -1,4 +1,4 @@
-.col-2.text-white-50
+.col-2.text-filter-theme
   .border.rounded.p-2
     = form_for :user_activities, html: { method: :get } do |f|
       details open=('true' if @users_all.size < 7)
@@ -34,7 +34,7 @@
         = number_field_tag 'filter[object_id]',
                             number_field_content,
                             min: 1,
-                            class: 'form-control bg-secondary text-light',
+                            class: 'form-control input-theme',
                             placeholder: 'Object ID'
       p
       #datetimepickerfrom.input-group.date.mt-4 data-target-input='nearest' title='Date from...'
@@ -46,7 +46,7 @@
                 i.fa.fa-arrow-right.ml-1
         - if @filter_params.present? && @filter_params[:date_from].present?
             - datefrom_field_content = @filter_params[:date_from]
-        input.form-control.datetimepicker-input.bg-secondary.text-light[
+        input.form-control.datetimepicker-input.input-theme[
           name='filter[date_from]'
           type='text'
           placeholder='Date from...'
@@ -62,7 +62,7 @@
                 i.fa.fa-calendar.ml-1
         - if @filter_params.present? && @filter_params[:date_to].present?
             - dateto_field_content = @filter_params[:date_to]
-        input.form-control.datetimepicker-input.bg-secondary.text-light[
+        input.form-control.datetimepicker-input.input-theme[
           name='filter[date_to]'
           type='text'
           placeholder='Date to...'

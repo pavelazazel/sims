@@ -5,13 +5,17 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <% if !(cookies[:darkmode] == 'true') %>
+      <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <% else %>
+      <%= stylesheet_link_tag 'application_dark', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <% end %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag "application" %>
+    <%= javascript_pack_tag 'application' %>
     <%= favicon_link_tag asset_path('favicon.ico') %>
   </head>
 
-  <body class="bg-dark">
+  <body class='bg-theme'>
     <%- if controller_name != 'sessions' %>
       <%= render partial: 'layouts/nav' unless @disable_nav%>
     <% end %>

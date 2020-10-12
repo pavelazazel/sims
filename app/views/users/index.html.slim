@@ -3,8 +3,8 @@ p
   = icon 'fas', 'plus'
 p
 
-table.px-2.table.table-dark.table-sm.table-striped.table-bordered.table-hover.table-responsive
-  tr.bg-secondary
+table.px-2.table.table-theme.table-sm.table-striped.table-bordered.table-hover.table-responsive
+  tr.tr-bg-theme
     th id
     th Username
     th
@@ -15,9 +15,10 @@ table.px-2.table.table-dark.table-sm.table-striped.table-bordered.table-hover.ta
      td.align-middle = user.id
      td.align-middle = user.username
      td.align-middle = image_tag user.image,
-                                   size: 50,
-                                   style: 'border-radius: 30px;' if user.image.attached?
-     td.align-middle = link_to '', user_path(user),
-                                   class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash',
-                                   method: :delete,
-                                   data: { confirm: 'Are you sure?' }
+                                 size: 50,
+                                 style: 'border-radius: 30px' if user.image.attached?
+     td.align-middle = link_to '',
+                       user_path(user),
+                       class: 'btn btn-sm btn-outline-danger mr-1 fas fa-trash',
+                       method: :delete,
+                       data: { confirm: 'Are you sure?' }

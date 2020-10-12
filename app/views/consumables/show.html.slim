@@ -1,11 +1,11 @@
-p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :title}: #{@consumable.title}
-p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :device_names}:
-- @consumable.name.ids.each do |id|
-  p.ml-5.text-light.col-5 ➤ #{Name.find(id).full_name}
-p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :quantity_in_stock}: #{@consumable.quantity_in_stock}
-p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :quantity_in_use}: #{@consumable.quantity_in_use}
-p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :quantity_ready_to_refill}: #{@consumable.quantity_ready_to_refill}
-p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :quantity_at_refill}: #{@consumable.quantity_at_refill}
-p.ml-2.text-light.col-5 #{Consumable.human_attribute_name :placement}: #{@consumable.placement}
-.ml-2.col-5
+.ml-2.text-theme.col-5
+  p #{Consumable.human_attribute_name :title}: #{@consumable.title}
+  p #{Consumable.human_attribute_name :device_names}:
+  - @consumable.name.ids.each do |id|
+    p.ml-4 ➤ #{Name.find(id).full_name}
+  p #{Consumable.human_attribute_name :quantity_in_stock}: #{@consumable.quantity_in_stock}
+  p #{Consumable.human_attribute_name :quantity_in_use}: #{@consumable.quantity_in_use}
+  p #{Consumable.human_attribute_name :quantity_ready_to_refill}: #{@consumable.quantity_ready_to_refill}
+  p #{Consumable.human_attribute_name :quantity_at_refill}: #{@consumable.quantity_at_refill}
+  p #{Consumable.human_attribute_name :placement}: #{@consumable.placement}
   = render partial: 'layouts/history'

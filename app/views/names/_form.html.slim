@@ -1,31 +1,46 @@
 = form_with model: @name, html: { autocomplete: 'off' }, local: true do |form|
   - if @name.errors.any?
-      div id="error_explanation"
-        h2.text-danger.ml-3 #{pluralize(@name.errors.count, "error")} prohibited this name from being saved:
+      div#error_explanation
+        h2.text-danger.ml-3 #{pluralize(@name.errors.count, 'error')} prohibited this name from being saved:
         - @name.errors.full_messages.each do |msg|
           li.text-danger.ml-3
             = msg
 
-  .form-group.form-control-sm data-controller='choice'
+  .form-group.form-control-sm.text-theme data-controller='choice'
     p
       .form-row
-        = form.label :type, class: 'ml-2 text-light col-1'
-        = form.collection_select :type_id, Type.all, :id, :title, { prompt: true }, { 'data-target': 'choice.select1' }
+        = form.label :type, class: 'ml-2 col-1'
+        = form.collection_select :type_id,
+                                 Type.all,
+                                 :id,
+                                 :title,
+                                 { prompt: true },
+                                 { 'data-target': 'choice.select1' }
     p
       .form-row
-        = form.label :brand, class: 'ml-2 text-light col-1'
-        = form.collection_select :brand_id, Brand.all, :id, :title, { prompt: true }, { 'data-target': 'choice.select2' }
+        = form.label :brand, class: 'ml-2 col-1'
+        = form.collection_select :brand_id,
+                                 Brand.all,
+                                 :id,
+                                 :title,
+                                 { prompt: true },
+                                 { 'data-target': 'choice.select2' }
     p
       .form-row
-        = form.label :model, class: 'ml-2 text-light col-1'
-        = form.text_field :model, class: 'bg-secondary text-light custom-input'
+        = form.label :model, class: 'ml-2 col-1'
+        = form.text_field :model, class: 'custom-input'
     p
       .form-row
-        =form.label :consumables, class: 'ml-2 text-light col-1'
-        =form.collection_select :consumable_ids, Consumable.all, :id, :full_consumable, {}, { multiple: true, 'data-target': 'choice.selectMulti' }
+        =form.label :consumables, class: 'ml-2 col-1'
+        =form.collection_select :consumable_ids,
+                                Consumable.all,
+                                :id,
+                                :full_consumable,
+                                {},
+                                { multiple: true, 'data-target': 'choice.selectMulti' }
     p
       .form-row
-        = form.label :image, class: 'ml-2 text-light col-1'
-        = form.file_field :image, class: 'text-light'
+        = form.label :image, class: 'ml-2 col-1'
+        = form.file_field :image
     p
-      = form.submit class: "btn btn-outline-success"
+      = form.submit class: 'btn btn-outline-success'

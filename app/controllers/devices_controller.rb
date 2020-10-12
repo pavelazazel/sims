@@ -131,8 +131,11 @@ class DevicesController < ApplicationController
   private
 
   def device_params
-    params.require(:device).permit(:name_id, :inventory_number,
-                                   :serial_number, :location_id, :comment)
+    params.require(:device).permit(:name_id,
+                                   :inventory_number,
+                                   :serial_number,
+                                   :location_id,
+                                   :comment)
   end
 
   def params_for_ransack(ransack_params)

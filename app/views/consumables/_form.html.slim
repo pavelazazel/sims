@@ -1,39 +1,44 @@
 = form_with model: @consumable, html: { autocomplete: 'off' }, local: true do |form|
   - if @consumable.errors.any?
-      div id="error_explanation"
-        h2.text-danger.ml-3 #{pluralize(@consumable.errors.count, "error")} prohibited this brand from being saved:
+      div#error_explanation
+        h2.text-danger.ml-3 #{pluralize(@consumable.errors.count, 'error')} prohibited this brand from being saved:
         - @consumable.errors.full_messages.each do |msg|
           li.text-danger.ml-3
             = msg
 
-  .form-group.form-control-sm data-controller='choice'
+  .form-group.form-control-sm.text-theme data-controller='choice'
     p
       .form-row
-        =form.label :title, class: 'ml-2 text-light col-2'
-        =form.text_field :title, class: 'bg-secondary text-light custom-input'
+        =form.label :title, class: 'ml-2 col-2'
+        =form.text_field :title, class: 'custom-input'
     p
       .form-row
-        =form.label :consumable_type, class: 'ml-2 text-light col-2'
-        =form.collection_select :consumable_type_id, ConsumableType.all, :id, :title, { prompt: true }, { 'data-target': 'choice.select1' }
+        =form.label :consumable_type, class: 'ml-2 col-2'
+        =form.collection_select :consumable_type_id,
+                                ConsumableType.all,
+                                :id,
+                                :title,
+                                { prompt: true },
+                                { 'data-target': 'choice.select1' }
     p
       .form-row
-        =form.label :quantity_in_stock, class: 'ml-2 text-light col-2'
-        =form.number_field :quantity_in_stock, min: 0, class: 'bg-secondary custom-input text-light'
+        =form.label :quantity_in_stock, class: 'ml-2 col-2'
+        =form.number_field :quantity_in_stock, min: 0, class: 'custom-input'
     p
       .form-row
-        =form.label :quantity_in_use, class: 'ml-2 text-light col-2'
-        =form.number_field :quantity_in_use, min: 0, class: 'bg-secondary custom-input text-light'
+        =form.label :quantity_in_use, class: 'ml-2 col-2'
+        =form.number_field :quantity_in_use, min: 0, class: 'custom-input'
     p
       .form-row
-        =form.label :quantity_ready_to_refill, class: 'ml-2 text-light col-2'
-        =form.number_field :quantity_ready_to_refill, min: 0, class: 'bg-secondary custom-input text-light'
+        =form.label :quantity_ready_to_refill, class: 'ml-2 col-2'
+        =form.number_field :quantity_ready_to_refill, min: 0, class: 'custom-input'
     p
       .form-row
-        =form.label :quantity_at_refill, class: 'ml-2 text-light col-2'
-        =form.number_field :quantity_at_refill, min: 0, class: 'bg-secondary custom-input text-light'
+        =form.label :quantity_at_refill, class: 'ml-2 col-2'
+        =form.number_field :quantity_at_refill, min: 0, class: 'custom-input'
     p
       .form-row
-        =form.label :placement, class: 'ml-2 text-light col-2'
-        =form.text_field :placement, class: 'bg-secondary text-light custom-input'
+        =form.label :placement, class: 'ml-2 col-2'
+        =form.text_field :placement, class: 'custom-input'
     p
       =form.submit class: 'btn btn-outline-success'
