@@ -53,7 +53,7 @@ gem 'axlsx_rails'
 
 gem 'ransack'
 gem 'webpacker', '~> 4.x'
-gem 'image_processing', '~> 1.2'
+gem 'image_processing', '~> 1.12'
 gem 'will_paginate', '~> 3.1.0'
 gem 'bootstrap-will_paginate'
 gem 'bootstrap4-datetime-picker-rails'
