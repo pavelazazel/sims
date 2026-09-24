@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: sims_db_admin
+      POSTGRES_PASSWORD: SIMS_DATABASE_PASSWORD
+      POSTGRES_DB: sims_production
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    image: sims
+    build: .
+    command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+    ports:
+      - "3050:3000"
+
+volumes:
+  pgdata:

@@ -1,24 +1,21 @@
-# README
+# Simple Inventory Management System
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## First setup
 
-Things you may want to cover:
+Build the Docker image and start the application and PostgreSQL:
 
-* Ruby version
+```bash
+docker compose up --build
+```
 
-* System dependencies
+Run the database migrations and seed the database:
 
-* Configuration
+```bash
+docker compose run --rm app rake db:migrate && docker compose run --rm app rake db:seed
+```
 
-* Database creation
+The application will be available at:
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```text
+http://localhost:3050
+```
